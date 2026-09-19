@@ -1,0 +1,27 @@
+[
+{
+  "path": "body.createdAt",
+  "action": "timestamp",
+  "reason": "time value changes on every run"
+},
+{
+  "path": "body[*].createdAt",
+  "action": "timestamp",
+  "reason": "time value changes on every run"
+},
+{
+  "path": "db.orders.added[*].created_at",
+  "action": "timestamp",
+  "reason": "time value changes on every run"
+},
+{
+  "path": "db.orders.removed[*].created_at",
+  "action": "timestamp",
+  "reason": "time value changes on every run"
+},
+{
+  "path": "db.users.added[*].created_at",
+  "action": "timestamp",
+  "reason": "time value changes on every run"
+}
+]

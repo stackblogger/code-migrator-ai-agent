@@ -8,7 +8,7 @@ Full design is in [PLAN.md](PLAN.md). Current status is in [docs/milestones.md](
 
 ## Status
 
-**Milestones 1 and 2 are done.**
+**Milestones 1, 2 and 3 are done.**
 
 **M1: repository analyzer.** It reads a repo and tells you:
 
@@ -21,6 +21,11 @@ Full design is in [PLAN.md](PLAN.md). Current status is in [docs/milestones.md](
 **M2: Docker sandbox.** `migrator verify` copies the repo, then installs, builds and runs its
 tests inside locked-down containers. No network (except for install), memory/CPU/process/time
 limits, read-only root, non-root user. Real `.env` files are never copied in.
+
+**M3: behaviour baseline.** `migrator baseline` starts the real app with its Postgres database
+in an isolated network (no internet), plays [scenarios](docs/scenarios.md) against it, and records
+status, body and database changes for every request. It plays everything twice to make sure
+the results are stable, and mutation testing shows how strong the recorded traces are.
 
 Supported languages as of now: **TypeScript** and **Python**. No LLM is used yet.
 
@@ -58,6 +63,27 @@ Exit code is 0 only when every step passes **and** tests were actually run. If a
 no tests, the result is `INCOMPLETE`, not `PASSED`. Add `--out results.json` for full logs.
 If a run crashes midway, `uv run migrator cleanup` removes leftover containers.
 
+Record the behaviour of the source app (needs Docker running):
+
+```bash
+uv run migrator baseline fixtures/ts-nestjs-shop --scenarios fixtures/scenarios/shop.json --rules fixtures/scenarios/ts-nestjs-shop.rules.json --out baseline/ts
+```
+
+Without `--rules` you will get `UNSTABLE` plus a `proposed_rules.json` to review.
+Add `--mutants 10` to also get a mutation score (slow: it rebuilds and restarts the app per mutant).
+Output folder has `baseline.json` (report), `traces.json`, `holdout.json` (sealed), `schema.json`
+(database columns and constraints) and `app.log`.
+
+## Logs
+
+Logs go to stderr, summaries go to stdout. Use `-v` for debug logs, `-q` for warnings only:
+
+```bash
+uv run migrator -v analyze fixtures/py-fastapi-shop
+```
+
+Set `MIGRATOR_LOG_FORMAT=json` for one JSON log line per event, or `MIGRATOR_LOG_LEVEL=DEBUG`.
+
 ## Quick start (Docker)
 
 ```bash
@@ -67,7 +93,7 @@ docker compose run --rm migrator analyze /repos/fixtures/ts-nestjs-shop
 To analyze your own repo, set `REPOS_DIR` in `.env` (copy from `.env.example`). It gets
 mounted read-only at `/repos/workspace`. Reports can be written to `/reports`, which is `./reports` on your machine.
 
-Please note: run `migrator verify` from your machine, not from this container. Giving the
+Please note: run `migrator verify` and `migrator baseline` from your machine, not from this container. Giving the
 container access to Docker would give it full control of your machine, which defeats the sandbox.
 
 ## Running tests
@@ -76,7 +102,7 @@ container access to Docker would give it full control of your machine, which def
 uv run pytest
 ```
 
-Tests marked `docker` start real containers and take 2-3 minutes. Skip them with
+Tests marked `docker` start real containers and take about 7 minutes. Skip them with
 `uv run pytest -m "not docker"`. They are skipped on their own when Docker is not running.
 
 Or inside Docker (docker tests get skipped there):
@@ -98,10 +124,12 @@ src/migrator/
     languages/     one package per language (typescript/, python/)
   analysis/        analyzer, dependency graph, config/env inventory, summary
   sandbox/         Docker sandbox, workspace copy, step runner, verify
+  baseline/        run app + Postgres, scenarios, recorder, DB diff, rules, mutation testing
+  log.py           logging setup
   cli.py           `migrator` command
-fixtures/          small sample repos used in tests
+fixtures/          small sample repos + shared scenarios used in tests
 tests/             unit/, integration/, sandbox/, snapshots/
-docs/              architecture and milestone notes
+docs/              architecture, scenarios format, milestone notes
 ```
 
 ## Configuration

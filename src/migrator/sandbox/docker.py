@@ -10,6 +10,7 @@ Every command gets a fresh container with:
 Commands are argument lists, never shell strings, and the executable must be in the allowlist.
 """
 
+import logging
 import os
 import subprocess
 import tempfile
@@ -23,6 +24,8 @@ from migrator.sandbox.models import Limits, StepResult
 NODE_TOOLS = {"node", "npm", "npx", "corepack", "yarn", "pnpm"}
 PYTHON_TOOLS = {"uv", "python", "python3", "pip", "pytest"}
 ALLOWED_EXECUTABLES = frozenset(NODE_TOOLS | PYTHON_TOOLS)
+log = logging.getLogger(__name__)
+
 LABEL = "migrator.sandbox=1"
 CONTAINER_WORKDIR = "/workspace"
 
@@ -47,6 +50,14 @@ class DockerSandbox:
         check_allowed(command)
         container = f"migrator-{uuid.uuid4().hex[:12]}"
         args = self.docker_args(container, image, workspace, network) + command
+        log.info(
+            "Step '%s' starting in %s (network %s): %s",
+            name,
+            container,
+            "on" if network else "off",
+            " ".join(command),
+        )
+        log.debug("Docker command: %s", " ".join(args))
 
         started = time.monotonic()
         timed_out = False
@@ -56,14 +67,22 @@ class DockerSandbox:
                 process.wait(timeout=self.limits.timeout_s)
             except subprocess.TimeoutExpired:
                 timed_out = True
-                self._docker("kill", container)
+                log.warning(
+                    "Step '%s' timed out after %ss, killing %s",
+                    name,
+                    self.limits.timeout_s,
+                    container,
+                )
+                self.docker_output("kill", container)
                 process.wait()
             duration = round(time.monotonic() - started, 2)
             output, truncated = _read_tail(output_file, self.limits.max_output_bytes)
 
-        oom_killed = self._docker("inspect", "-f", "{{.State.OOMKilled}}", container) == "true"
-        self._docker("rm", "-f", container)
-        return StepResult(
+        oom_killed = (
+            self.docker_output("inspect", "-f", "{{.State.OOMKilled}}", container) == "true"
+        )
+        self.docker_output("rm", "-f", container)
+        result = StepResult(
             name=name,
             command=command,
             network=network,
@@ -74,50 +93,75 @@ class DockerSandbox:
             output=output,
             output_truncated=truncated,
         )
+        if result.ok:
+            log.info("Step '%s' passed in %.1fs", name, duration)
+        else:
+            log.error("Step '%s' failed in %.1fs: %s", name, duration, result.failure_reason)
+        if truncated:
+            log.debug(
+                "Output of step '%s' was cut to last %d bytes", name, self.limits.max_output_bytes
+            )
+        return result
 
     def docker_args(self, container: str, image: str, workspace: Path, network: bool) -> list[str]:
-        limits = self.limits
         options = [
             ("--name", container),
             ("--label", LABEL),
             ("--network", "bridge" if network else "none"),
-            ("--memory", limits.memory),
-            ("--memory-swap", limits.memory),  # same as memory, so no extra swap
-            ("--cpus", str(limits.cpus)),
-            ("--pids-limit", str(limits.pids)),
-            ("--tmpfs", f"/tmp:rw,exec,nosuid,size={limits.tmp_size}"),
-            ("--cap-drop", "ALL"),
-            ("--security-opt", "no-new-privileges"),
-            ("--user", f"{os.getuid()}:{os.getgid()}"),
-            ("--env", "HOME=/tmp"),
-            ("--env", "CI=true"),
-            ("--env", "npm_config_cache=/tmp/.npm"),
-            ("--env", "UV_CACHE_DIR=/tmp/.uv-cache"),
+            *hardened_options(self.limits),
             ("--volume", f"{workspace.resolve()}:{CONTAINER_WORKDIR}"),
             ("--workdir", CONTAINER_WORKDIR),
         ]
-        # --init adds a tiny init process that cleans up child processes.
-        args = [self.docker, "run", "--init", "--read-only"]
-        for flag, value in options:
-            args += [flag, value]
-        return args + [image]
+        return [self.docker, "run", *HARDENED_FLAGS, *to_args(options), image]
 
     def ensure_image(self, image: str) -> None:
         """Pull the image on the host first, so pull time does not eat the step timeout."""
-        if self._docker("image", "inspect", image) is None:
+        if self.docker_output("image", "inspect", image) is None:
+            log.info("Pulling image %s", image)
             result = subprocess.run([self.docker, "pull", image], capture_output=True, text=True)
             if result.returncode != 0:
                 raise RuntimeError(f"Cannot pull image {image}: {result.stderr.strip()}")
 
     def cleanup_stale(self) -> None:
         """Remove containers left behind by a crashed earlier run."""
-        ids = self._docker("ps", "-aq", "--filter", f"label={LABEL}")
+        ids = self.docker_output("ps", "-aq", "--filter", f"label={LABEL}")
         if ids:
-            self._docker("rm", "-f", *ids.split())
+            log.warning("Removing %d leftover sandbox containers", len(ids.split()))
+            self.docker_output("rm", "-f", *ids.split())
 
-    def _docker(self, *args: str) -> str | None:
+    def docker_output(self, *args: str) -> str | None:
+        """Run a docker CLI command. Returns stdout, or None if it failed."""
         result = subprocess.run([self.docker, *args], capture_output=True, text=True)
-        return result.stdout.strip() if result.returncode == 0 else None
+        if result.returncode != 0:
+            log.debug("docker %s failed: %s", " ".join(args[:2]), result.stderr.strip()[:500])
+            return None
+        return result.stdout.strip()
+
+
+# --init adds a tiny init process that cleans up child processes.
+HARDENED_FLAGS = ["--init", "--read-only"]
+
+
+def hardened_options(limits: Limits) -> list[tuple[str, str]]:
+    """Limits and lock-down options shared by every container that runs repo code."""
+    return [
+        ("--memory", limits.memory),
+        ("--memory-swap", limits.memory),  # same as memory, so no extra swap
+        ("--cpus", str(limits.cpus)),
+        ("--pids-limit", str(limits.pids)),
+        ("--tmpfs", f"/tmp:rw,exec,nosuid,size={limits.tmp_size}"),
+        ("--cap-drop", "ALL"),
+        ("--security-opt", "no-new-privileges"),
+        ("--user", f"{os.getuid()}:{os.getgid()}"),
+        ("--env", "HOME=/tmp"),
+        ("--env", "CI=true"),
+        ("--env", "npm_config_cache=/tmp/.npm"),
+        ("--env", "UV_CACHE_DIR=/tmp/.uv-cache"),
+    ]
+
+
+def to_args(options: list[tuple[str, str]]) -> list[str]:
+    return [part for pair in options for part in pair]
 
 
 def check_allowed(command: list[str]) -> None:

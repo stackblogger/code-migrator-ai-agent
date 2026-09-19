@@ -105,3 +105,14 @@ class Toolchain(BaseModel):
     image: str
     steps: list[ToolchainStep]
     notes: list[str] = Field(default_factory=list)  # e.g. "no test command found"
+
+
+class LaunchInfo(BaseModel):
+    """What a language adapter knows about starting the app. Framework-neutral."""
+
+    command: list[str] | None  # None = could not find how to start the app
+    services: list[str] = Field(default_factory=list)  # e.g. ["postgres"]
+    database_url_template: str | None = (
+        None  # "{user}", "{password}", "{host}", "{port}", "{database}"
+    )
+    notes: list[str] = Field(default_factory=list)

@@ -1107,6 +1107,7 @@
           {
             "dependencies": {
               "fastapi": ">=0.111",
+              "psycopg": ">=3.2",
               "pydantic": ">=2.7",
               "pyjwt": ">=2.8",
               "sqlalchemy": ">=2.0",

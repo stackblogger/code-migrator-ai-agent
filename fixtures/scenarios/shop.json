@@ -1,0 +1,237 @@
+{
+  "description": "Shop API flows. Same file is used for the NestJS and the FastAPI app.",
+  "env": {
+    "JWT_SECRET": "baseline-secret"
+  },
+  "vars": {
+    "USER_1_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwicm9sZSI6ImN1c3RvbWVyIn0.MAxT1hUEoZFor2KcL_yhpx3b93i2jPH53N57-NfrxRU",
+    "USER_2_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwicm9sZSI6ImN1c3RvbWVyIn0.cKzxWC-aVa4f7oO5tn5ygPlXRTFweDvUtIJ9xbEcjdc"
+  },
+  "scenarios": [
+    {
+      "name": "register and fetch user",
+      "steps": [
+        {
+          "method": "POST",
+          "path": "/users",
+          "body": {
+            "email": "Asha@Example.com",
+            "password": "secret123"
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/users/1",
+          "headers": {
+            "Authorization": "Bearer ${USER_1_TOKEN}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "duplicate email is rejected",
+      "steps": [
+        {
+          "method": "POST",
+          "path": "/users",
+          "body": {
+            "email": "ravi@example.com",
+            "password": "secret123"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/users",
+          "body": {
+            "email": "RAVI@example.com",
+            "password": "secret123"
+          }
+        }
+      ]
+    },
+    {
+      "name": "invalid registration",
+      "steps": [
+        {
+          "method": "POST",
+          "path": "/users",
+          "body": {
+            "email": "not-an-email",
+            "password": "short"
+          }
+        }
+      ]
+    },
+    {
+      "name": "unknown user",
+      "steps": [
+        {
+          "method": "GET",
+          "path": "/users/99",
+          "headers": {
+            "Authorization": "Bearer ${USER_1_TOKEN}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "missing token",
+      "steps": [
+        {
+          "method": "GET",
+          "path": "/orders"
+        }
+      ]
+    },
+    {
+      "name": "bad token",
+      "steps": [
+        {
+          "method": "GET",
+          "path": "/orders",
+          "headers": {
+            "Authorization": "Bearer not-a-token"
+          }
+        }
+      ]
+    },
+    {
+      "name": "order lifecycle",
+      "steps": [
+        {
+          "method": "POST",
+          "path": "/users",
+          "body": {
+            "email": "meera@example.com",
+            "password": "secret123"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/orders",
+          "headers": {
+            "Authorization": "Bearer ${USER_1_TOKEN}"
+          },
+          "body": {
+            "total": "19.99",
+            "note": "first order"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/orders",
+          "headers": {
+            "Authorization": "Bearer ${USER_1_TOKEN}"
+          },
+          "body": {
+            "total": "5.50"
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/orders",
+          "headers": {
+            "Authorization": "Bearer ${USER_1_TOKEN}"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/orders/1/cancel",
+          "headers": {
+            "Authorization": "Bearer ${USER_1_TOKEN}"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/orders/99/cancel",
+          "headers": {
+            "Authorization": "Bearer ${USER_1_TOKEN}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "zero total is rejected",
+      "steps": [
+        {
+          "method": "POST",
+          "path": "/users",
+          "body": {
+            "email": "kiran@example.com",
+            "password": "secret123"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/orders",
+          "headers": {
+            "Authorization": "Bearer ${USER_1_TOKEN}"
+          },
+          "body": {
+            "total": "0"
+          }
+        }
+      ]
+    },
+    {
+      "name": "orders are private to their owner",
+      "steps": [
+        {
+          "method": "POST",
+          "path": "/users",
+          "body": {
+            "email": "anil@example.com",
+            "password": "secret123"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/users",
+          "body": {
+            "email": "divya@example.com",
+            "password": "secret123"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/orders",
+          "headers": {
+            "Authorization": "Bearer ${USER_1_TOKEN}"
+          },
+          "body": {
+            "total": "12.00"
+          }
+        },
+        {
+          "method": "GET",
+          "path": "/orders",
+          "headers": {
+            "Authorization": "Bearer ${USER_2_TOKEN}"
+          }
+        },
+        {
+          "method": "POST",
+          "path": "/orders/1/cancel",
+          "headers": {
+            "Authorization": "Bearer ${USER_2_TOKEN}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "order for unknown user",
+      "steps": [
+        {
+          "method": "POST",
+          "path": "/orders",
+          "headers": {
+            "Authorization": "Bearer ${USER_1_TOKEN}"
+          },
+          "body": {
+            "total": "3.00"
+          }
+        }
+      ]
+    }
+  ]
+}

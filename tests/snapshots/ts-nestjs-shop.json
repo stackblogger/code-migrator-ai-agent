@@ -1144,6 +1144,7 @@
       ".env.example",
       "nest-cli.json",
       "package.json",
+      "tsconfig.build.json",
       "tsconfig.json"
     ],
     "env_vars": {
@@ -1258,7 +1259,7 @@
       }
     ],
     "repo_name": "ts-nestjs-shop",
-    "total_files": 23
+    "total_files": 24
   },
   "symbols": [
     {

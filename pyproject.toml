@@ -5,6 +5,7 @@ description = "AI agent that migrates a codebase from one language/framework to 
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "httpx>=0.27",
     "networkx>=3.3",
     "pydantic>=2.8",
     "tree-sitter>=0.23",

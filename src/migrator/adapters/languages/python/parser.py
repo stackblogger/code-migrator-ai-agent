@@ -3,7 +3,7 @@
 import re
 
 import tree_sitter_python as py_grammar
-from tree_sitter import Language, Node, Parser
+from tree_sitter import Language, Node, Parser, Tree
 
 from migrator.adapters.languages.treesitter import decorator_name, lines, text
 from migrator.core.models import ImportRef, ParsedFile, Symbol
@@ -18,8 +18,12 @@ ENV_PATTERNS = [
 MAIN_GUARD = re.compile(r"if\s+__name__\s*==\s*['\"]__main__['\"]")
 
 
+def python_tree(source: bytes) -> Tree:
+    return Parser(PY_LANGUAGE).parse(source)
+
+
 def parse_python(path: str, source: bytes) -> ParsedFile:
-    root = Parser(PY_LANGUAGE).parse(source).root_node
+    root = python_tree(source).root_node
     visitor = _Visitor(path, source)
     for node in root.children:
         visitor.visit_top_level(node)

@@ -8,3 +8,4 @@ reports/
 workspace/
 node_modules/
 dist/
+/baseline/

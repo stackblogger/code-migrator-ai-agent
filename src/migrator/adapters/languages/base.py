@@ -6,7 +6,16 @@ adapter and register it in `adapters/languages/__init__.py`. No change needed in
 
 from abc import ABC, abstractmethod
 
-from migrator.core.models import ImportRef, LanguageInventory, Manifest, ParsedFile, Toolchain
+from tree_sitter import Tree
+
+from migrator.core.models import (
+    ImportRef,
+    LanguageInventory,
+    LaunchInfo,
+    Manifest,
+    ParsedFile,
+    Toolchain,
+)
 from migrator.repository import LocalRepository
 
 ToolTable = dict[str, list[tuple[str, str]]]  # dependency -> [(category, tool name)]
@@ -24,6 +33,10 @@ class LanguageAdapter(ABC):
 
     @abstractmethod
     def parse_file(self, path: str, source: bytes) -> ParsedFile: ...
+
+    @abstractmethod
+    def syntax_tree(self, path: str, source: bytes) -> Tree:
+        """Raw tree-sitter tree. Used by language-neutral tools like mutation testing."""
 
     @abstractmethod
     def resolve_imports(self, imports: list[ImportRef], files: set[str]) -> list[ImportRef]:
@@ -49,6 +62,10 @@ class LanguageAdapter(ABC):
     @abstractmethod
     def toolchain(self, repo: LocalRepository, inventory: LanguageInventory) -> Toolchain:
         """Image and fixed commands to install, build and test this repo in the sandbox."""
+
+    @abstractmethod
+    def launch_info(self, repo: LocalRepository, inventory: LanguageInventory) -> LaunchInfo:
+        """How to start the app, and which services (like a database) it needs."""
 
     def is_declared(self, package: str, manifests: list[Manifest]) -> bool:
         """True if the package is listed in any manifest."""

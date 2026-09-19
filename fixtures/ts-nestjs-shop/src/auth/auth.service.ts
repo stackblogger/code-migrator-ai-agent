@@ -4,7 +4,7 @@ import { createHash } from 'crypto';
 import type { User } from '../users/user.entity';
 
 export interface TokenPayload {
-  sub: number;
+  sub: string; // JWT standard says `sub` is a string
   role: string;
 }
 
@@ -17,7 +17,7 @@ export class AuthService {
   }
 
   issueToken(user: User): string {
-    return this.jwt.sign({ sub: user.id, role: user.role });
+    return this.jwt.sign({ sub: String(user.id), role: user.role });
   }
 
   verifyToken(token: string): TokenPayload {

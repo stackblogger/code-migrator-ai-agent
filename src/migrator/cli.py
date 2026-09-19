@@ -6,6 +6,9 @@ from pathlib import Path
 
 from migrator.analysis import CodeGraph, analyze
 from migrator.analysis.summary import format_summary
+from migrator.baseline import BaselineStatus, create_baseline, write_baseline
+from migrator.baseline.summary import format_baseline
+from migrator.log import setup_logging
 from migrator.repository import LocalRepository
 from migrator.sandbox import DockerSandbox, RunStatus, verify_repo
 from migrator.sandbox.summary import format_runs
@@ -13,9 +16,10 @@ from migrator.sandbox.summary import format_runs
 
 def main(argv: list[str] | None = None) -> int:
     args = _parser().parse_args(argv)
+    setup_logging("DEBUG" if args.verbose else "WARNING" if args.quiet else None)
     try:
         return args.handler(args)
-    except (FileNotFoundError, KeyError, RuntimeError) as error:
+    except (FileNotFoundError, KeyError, RuntimeError, ValueError) as error:
         print(f"Error: {error}", file=sys.stderr)
         return 1
 
@@ -57,6 +61,20 @@ def _verify(args: argparse.Namespace) -> int:
     return 0 if all_passed else 1
 
 
+def _baseline(args: argparse.Namespace) -> int:
+    result = create_baseline(
+        LocalRepository(args.repo),
+        Path(args.scenarios),
+        rules_path=Path(args.rules) if args.rules else None,
+        runs=args.runs,
+        mutants=args.mutants,
+    )
+    write_baseline(result, Path(args.out))
+    print(format_baseline(result.report))
+    print(f"\nFiles written to {args.out}")
+    return 0 if result.report.status == BaselineStatus.STABLE else 1
+
+
 def _cleanup(args: argparse.Namespace) -> int:
     DockerSandbox().cleanup_stale()
     print("Removed leftover sandbox containers (if any).")
@@ -65,6 +83,8 @@ def _cleanup(args: argparse.Namespace) -> int:
 
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="migrator", description="AI code migration agent")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Show debug logs")
+    parser.add_argument("-q", "--quiet", action="store_true", help="Show only warnings and errors")
     sub = parser.add_subparsers(required=True)
 
     analyze_cmd = sub.add_parser("analyze", help="Analyze a repository")
@@ -86,6 +106,19 @@ def _parser() -> argparse.ArgumentParser:
         "--keep-workspace", action="store_true", help="Do not delete the sandbox copy after run"
     )
     verify_cmd.set_defaults(handler=_verify)
+
+    baseline_cmd = sub.add_parser(
+        "baseline", help="Run the app, record traces for scenarios, check they are stable"
+    )
+    baseline_cmd.add_argument("repo", help="Path to the repository")
+    baseline_cmd.add_argument("--scenarios", required=True, help="Scenario suite JSON file")
+    baseline_cmd.add_argument("--rules", help="Approved normalization rules JSON file")
+    baseline_cmd.add_argument("--out", default="baseline", help="Output folder")
+    baseline_cmd.add_argument("--runs", type=int, default=2, help="How many times to replay")
+    baseline_cmd.add_argument(
+        "--mutants", type=int, default=0, help="Run mutation testing with this many mutants"
+    )
+    baseline_cmd.set_defaults(handler=_baseline)
 
     cleanup_cmd = sub.add_parser("cleanup", help="Remove leftover sandbox containers")
     cleanup_cmd.set_defaults(handler=_cleanup)

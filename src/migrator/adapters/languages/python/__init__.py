@@ -1,11 +1,21 @@
 import posixpath
 
+from tree_sitter import Tree
+
 from migrator.adapters.languages.base import LanguageAdapter, declared_packages
 from migrator.adapters.languages.python import project
-from migrator.adapters.languages.python.parser import parse_python
+from migrator.adapters.languages.python.launch import launch_info
+from migrator.adapters.languages.python.parser import parse_python, python_tree
 from migrator.adapters.languages.python.resolver import STDLIB, PythonResolver
 from migrator.adapters.languages.python.toolchain import build_toolchain
-from migrator.core.models import ImportRef, LanguageInventory, Manifest, ParsedFile, Toolchain
+from migrator.core.models import (
+    ImportRef,
+    LanguageInventory,
+    LaunchInfo,
+    Manifest,
+    ParsedFile,
+    Toolchain,
+)
 from migrator.repository import LocalRepository
 
 # Import name -> package name, where they are different.
@@ -34,6 +44,9 @@ class PythonAdapter(LanguageAdapter):
     def parse_file(self, path: str, source: bytes) -> ParsedFile:
         return parse_python(path, source)
 
+    def syntax_tree(self, path: str, source: bytes) -> Tree:
+        return python_tree(source)
+
     def resolve_imports(self, imports: list[ImportRef], files: set[str]) -> list[ImportRef]:
         resolver = PythonResolver(files)
         return [resolver.resolve(imp) for imp in imports]
@@ -54,6 +67,9 @@ class PythonAdapter(LanguageAdapter):
 
     def toolchain(self, repo: LocalRepository, inventory: LanguageInventory) -> Toolchain:
         return build_toolchain(repo, inventory)
+
+    def launch_info(self, repo: LocalRepository, inventory: LanguageInventory) -> LaunchInfo:
+        return launch_info(inventory)
 
     def is_builtin(self, package: str) -> bool:
         return package in STDLIB

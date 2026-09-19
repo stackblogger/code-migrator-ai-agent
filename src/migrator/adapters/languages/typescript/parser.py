@@ -3,7 +3,7 @@
 import re
 
 import tree_sitter_typescript as ts_grammar
-from tree_sitter import Language, Node, Parser
+from tree_sitter import Language, Node, Parser, Tree
 
 from migrator.adapters.languages.treesitter import decorator_name, lines, text
 from migrator.core.models import ImportRef, ParsedFile, Symbol
@@ -34,9 +34,13 @@ ENV_PATTERNS = [
 ]
 
 
-def parse_typescript(path: str, source: bytes) -> ParsedFile:
+def typescript_tree(path: str, source: bytes) -> Tree:
     language = TSX_LANGUAGE if path.endswith(".tsx") else TS_LANGUAGE
-    root = Parser(language).parse(source).root_node
+    return Parser(language).parse(source)
+
+
+def parse_typescript(path: str, source: bytes) -> ParsedFile:
+    root = typescript_tree(path, source).root_node
     visitor = _Visitor(path, source)
     for node in root.children:
         visitor.visit_top_level(node)

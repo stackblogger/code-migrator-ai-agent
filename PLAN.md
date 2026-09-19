@@ -449,12 +449,12 @@ Long-running work runs in background workers, never inside a request.
 |---|---|---|
 | **M1** | Repository analyzer: language, package manager, build and test tool detection; entry points; config/env discovery; tree-sitter symbols; import graph with SCCs; CLI `migrator analyze` | Snapshot tests on TS and Python fixture repos; graph and SCCs correct on a fixture with a cycle |
 | **M2** | Sandbox + toolchains: install, build, and test the **source** fixtures in Docker with limits and network phases | Source fixture tests pass in sandbox; sandbox escape/limit tests pass |
-| **M3** | Behavior baseline: run source app + its services (DB) in sandbox, harness, determinism controls, record/replay proxy, DB diffing, trace capture, self-consistency check | Source-vs-source replay is 100% stable; coverage and mutation score reported |
+| **M3** | Behavior baseline: run source app + its services (DB) in sandbox, harness, determinism controls, DB diffing, trace capture, self-consistency check, hold-out split, mutation score | Source-vs-source replay is 100% stable (with approved rules); mutation score reported |
 | **M4** | CCM + NestJS/FastAPI framework adapters + ledger + surface extraction | Ledger for fixture is complete; API/schema surface extracted on both stacks |
 | **M5** | LLM layer + planner + interface-first skeleton | Skeleton for fixture compiles and boots; plan respects SCC order |
 | **M6** | Unit migration loop + sealed tests + fix loop + git per unit | ≥ 80% of fixture units reach unit-test green; attempts/blocked tracked |
 | **M7** | Differential validation + gates G0–G6 + report + **evaluation harness** | First full NestJS→FastAPI fixture run with a truthful report; eval runs N× and reports variance |
-| **M8** | Hardening: hazards, property/fuzz, authz matrix, anti-cheat, hold-out, adversarial reviewer, G7–G10 | Seeded bugs injected into target are caught by gates (≥ 95% of the seeded bug set) |
+| **M8** | Hardening: hazards, property/fuzz, authz matrix, anti-cheat, adversarial reviewer, line coverage of source under the harness, record/replay proxy for external services, G7–G10 | Seeded bugs injected into target are caught by gates (≥ 95% of the seeded bug set) |
 | **M9** | API + Redis workers + Postgres + approvals/waivers | API tests; pause/resume/cancel survive worker restart |
 | **M10** | Web UI: projects, plan, progress, units, ledger, gates, trace diffs, diff viewer, logs, report | UI e2e smoke test |
 | **M11** | Cutover kit (§10) + reverse direction Python/FastAPI → TS/NestJS | Contract suite runs in target CI; shadow comparator works against fixture |

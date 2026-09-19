@@ -50,6 +50,46 @@ stop at first failure  →  SandboxRun: PASSED / FAILED / INCOMPLETE
 
 Images used: `node:22-bookworm-slim` and `ghcr.io/astral-sh/uv:python3.12-bookworm-slim`.
 
+## Flow of `migrator baseline`
+
+```text
+analyze  →  adapter.launch_info()  →  RunSpec (command, port, env, services)
+   ↓                                    (.migrator.toml can override)
+Workspace copy → install + build in sandbox (same as verify, without tests)
+   ↓
+AppEnvironment:
+   host 127.0.0.1:random ──► gateway (socat) ──► app ──► postgres
+                              └──── internal network, no internet ────┘
+   ↓
+for run in 1..N:  record DB schema; for each scenario: reset DB → send requests → record status/body/DB diff
+   ↓
+normalize with approved rules → compare runs → STABLE / UNSTABLE (+ proposed rules)
+   ↓
+optional mutation testing → baseline.json, traces.json, holdout.json, schema.json, app.log
+```
+
+**Determinism controls:** DB tables truncated with `RESTART IDENTITY` before every scenario,
+`TZ=UTC`, fixed locale, `PYTHONHASHSEED=0`, only contract headers recorded (no `Date`),
+fixed secrets and tokens through the scenario suite. Anything still unstable is caught by the
+second run and needs a human-approved rule.
+
+**Running app isolation:** app and DB are on an `--internal` Docker network (no internet).
+The app container has the same lock-down as sandbox steps. Postgres keeps data in memory
+(tmpfs) and has no port on the host; we read it with `docker exec psql`. The gateway is the
+only way in and listens only on 127.0.0.1.
+
+**Mutation testing:** tree-sitter finds operator tokens (`<=`, `===`, `&&`, `+`, `true`, ...) in
+source files. Each picked mutant is applied, the app is rebuilt, started and replayed.
+Killed = some trace changed (good). Survived = weak spot in scenarios. Did not build = not counted.
+Same seed picks the same mutants every time.
+
+## Logging
+
+Every module uses `logging.getLogger(__name__)`; setup is in `log.py`. Logs go to stderr.
+Main steps log at INFO (analysis, each sandbox step, containers started/removed, each scenario,
+each mutant). Docker commands, per-file parsing and per-request details are at DEBUG (`-v`).
+Failures log at ERROR with the reason (exit code, timeout, memory limit, app logs tail).
+
 ## Language adapter contract
 
 See `adapters/languages/base.py`. Every adapter gives:
@@ -64,6 +104,8 @@ See `adapters/languages/base.py`. Every adapter gives:
 | `find_entry_points(...)` | Where the app starts |
 | `is_builtin(pkg)` / `is_declared(pkg, manifests)` | Used to warn about missing dependencies |
 | `toolchain(repo, inventory)` | Docker image and fixed install/build/test commands |
+| `launch_info(repo, inventory)` | Start command, services (Postgres), database URL format |
+| `syntax_tree(path, source)` | Raw tree-sitter tree, used by mutation testing |
 
 ## Rules we follow
 
@@ -74,7 +116,7 @@ See `adapters/languages/base.py`. Every adapter gives:
 - **Deterministic output.** Everything is sorted, so the same repo always gives the same report.
   Snapshot tests depend on this.
 
-## Known limits (as of M2)
+## Known limits (as of M3)
 
 - TypeScript path aliases from `tsconfig.json` (`paths`, `baseUrl`) are not resolved yet.
   Such imports show up as "not declared" warnings.
@@ -83,4 +125,8 @@ See `adapters/languages/base.py`. Every adapter gives:
 - Install steps get open internet. A package-registry-only proxy is planned for later.
 - Python image is fixed at 3.12 and Node at 22. We do not read `requires-python` or `engines` yet.
 - Only the root `package.json` / `pyproject.toml` is used. Monorepos are not handled yet.
-- Starting the app and its database (Postgres etc.) moves to M3, where we need the app running.
+- Only HTTP apps and only Postgres as a service. Other databases and queues come later.
+- No record/replay of external HTTP services yet. Outbound calls simply fail (no internet),
+  and the analyzer warns when it sees an HTTP client library.
+- Scenarios are written by hand for now. Generating them from routes comes with M4/M5.
+- Line coverage is not measured yet (planned for M8). The mutation score is the strength signal for now.

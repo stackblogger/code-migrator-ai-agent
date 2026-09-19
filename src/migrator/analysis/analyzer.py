@@ -3,6 +3,8 @@
 This file has no language knowledge. All of that lives in the adapters.
 """
 
+import logging
+import time
 from dataclasses import dataclass, field
 
 from migrator.adapters.languages import LanguageAdapter, default_adapters
@@ -17,6 +19,8 @@ from migrator.core.models import (
 )
 from migrator.repository import LocalRepository
 
+log = logging.getLogger(__name__)
+
 
 @dataclass
 class _LanguageResult:
@@ -28,7 +32,9 @@ class _LanguageResult:
 
 def analyze(repo: LocalRepository, adapters: list[LanguageAdapter] | None = None) -> RepoReport:
     adapters = adapters if adapters is not None else default_adapters()
+    started = time.monotonic()
     files = repo.files()
+    log.info("Analyzing repo '%s' (%d files)", repo.name, len(files))
 
     results = [r for a in adapters if (r := _analyze_language(repo, a, files)) is not None]
 
@@ -51,11 +57,22 @@ def analyze(repo: LocalRepository, adapters: list[LanguageAdapter] | None = None
         env_vars=_env_vars(repo, files, parsed),
     )
     graph = CodeGraph(sorted(p.path for p in parsed), imports)
+    report_graph = graph.to_report()
+    log.info(
+        "Analysis done in %.1fs: %d symbols, %d imports, %d cycles, %d warnings",
+        time.monotonic() - started,
+        len(symbols),
+        len(imports),
+        len(report_graph.cycles),
+        len(warnings),
+    )
+    for warning in sorted(warnings):
+        log.warning(warning)
     return RepoReport(
         inventory=inventory,
         symbols=symbols,
         imports=imports,
-        graph=graph.to_report(),
+        graph=report_graph,
         warnings=sorted(warnings),
     )
 
@@ -65,7 +82,9 @@ def _analyze_language(
 ) -> _LanguageResult | None:
     source_files = [f for f in files if adapter.owns(f)]
     if not source_files:
+        log.debug("No %s files found", adapter.name)
         return None
+    log.info("Parsing %d %s files", len(source_files), adapter.name)
 
     warnings: list[str] = []
     parsed: list[ParsedFile] = []
@@ -77,6 +96,9 @@ def _analyze_language(
             continue
         if result.parse_errors:
             warnings.append(f"{adapter.name}: syntax errors in {path}, results may be partial")
+        log.debug(
+            "Parsed %s: %d symbols, %d imports", path, len(result.symbols), len(result.imports)
+        )
         parsed.append(result)
 
     imports = adapter.resolve_imports([i for p in parsed for i in p.imports], set(files))

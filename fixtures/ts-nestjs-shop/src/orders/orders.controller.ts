@@ -22,17 +22,17 @@ export class OrdersController {
 
   @Post()
   async create(@Req() req: { user: TokenPayload }, @Body() dto: CreateOrderDto) {
-    return toResponse(await this.orders.create(req.user.sub, dto));
+    return toResponse(await this.orders.create(Number(req.user.sub), dto));
   }
 
   @Get()
   async list(@Req() req: { user: TokenPayload }) {
-    const orders = await this.orders.listForUser(req.user.sub);
+    const orders = await this.orders.listForUser(Number(req.user.sub));
     return orders.map(toResponse);
   }
 
   @Post(':id/cancel')
   async cancel(@Req() req: { user: TokenPayload }, @Param('id', ParseIntPipe) id: number) {
-    return toResponse(await this.orders.cancel(req.user.sub, id));
+    return toResponse(await this.orders.cancel(Number(req.user.sub), id));
   }
 }
