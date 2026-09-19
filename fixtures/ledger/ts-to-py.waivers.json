@@ -1,0 +1,17 @@
+[
+  {
+    "key": "POST /orders/{}/cancel",
+    "reason": "Test fixture: the two sample apps differ on purpose (201 vs 200) so M7 differential testing has a real difference to catch",
+    "approved_by": "test-fixture (not a real approval)"
+  },
+  {
+    "key": "POST /orders body.total",
+    "reason": "Test fixture: numeric string vs decimal is kept on purpose as a validation hazard for M7/M8",
+    "approved_by": "test-fixture (not a real approval)"
+  },
+  {
+    "key": "orders.userId",
+    "reason": "Test fixture: userId vs user_id is kept on purpose as a naming hazard; the target has orders.user_id",
+    "approved_by": "test-fixture (not a real approval)"
+  }
+]

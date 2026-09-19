@@ -1,6 +1,7 @@
 """Command line entry point for the `migrator` command."""
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -8,6 +9,11 @@ from migrator.analysis import CodeGraph, analyze
 from migrator.analysis.summary import format_summary
 from migrator.baseline import BaselineStatus, create_baseline, write_baseline
 from migrator.baseline.summary import format_baseline
+from migrator.concepts.extract import build_concept_model
+from migrator.concepts.schema_check import check_against_runtime
+from migrator.concepts.summary import format_concepts
+from migrator.ledger import build_ledger, load_waivers
+from migrator.ledger.summary import format_ledger
 from migrator.log import setup_logging
 from migrator.repository import LocalRepository
 from migrator.sandbox import DockerSandbox, RunStatus, verify_repo
@@ -75,6 +81,33 @@ def _baseline(args: argparse.Namespace) -> int:
     return 0 if result.report.status == BaselineStatus.STABLE else 1
 
 
+def _concepts(args: argparse.Namespace) -> int:
+    model = build_concept_model(LocalRepository(args.repo))
+    if args.out:
+        Path(args.out).write_text(model.model_dump_json(indent=2) + "\n")
+        print(f"Full concept model written to {args.out}\n")
+    print(format_concepts(model))
+    if not args.schema:
+        return 0
+    problems = check_against_runtime(model, json.loads(Path(args.schema).read_text()))
+    print(f"\nSchema check against {args.schema}: {len(problems) or 'no'} problems")
+    for problem in problems:
+        print(f"  - {problem}")
+    return 1 if problems else 0
+
+
+def _ledger(args: argparse.Namespace) -> int:
+    source = build_concept_model(LocalRepository(args.source))
+    target = build_concept_model(LocalRepository(args.target)) if args.target else None
+    waivers = load_waivers(Path(args.waivers) if args.waivers else None)
+    ledger = build_ledger(source, target, waivers)
+    if args.out:
+        Path(args.out).write_text(ledger.model_dump_json(indent=2) + "\n")
+        print(f"Full ledger written to {args.out}\n")
+    print(format_ledger(ledger))
+    return 0 if ledger.complete else 1
+
+
 def _cleanup(args: argparse.Namespace) -> int:
     DockerSandbox().cleanup_stale()
     print("Removed leftover sandbox containers (if any).")
@@ -119,6 +152,23 @@ def _parser() -> argparse.ArgumentParser:
         "--mutants", type=int, default=0, help="Run mutation testing with this many mutants"
     )
     baseline_cmd.set_defaults(handler=_baseline)
+
+    concepts_cmd = sub.add_parser(
+        "concepts", help="Show routes, request fields, tables and errors found in the code"
+    )
+    concepts_cmd.add_argument("repo", help="Path to the repository")
+    concepts_cmd.add_argument("--out", help="Write the full concept model to this JSON file")
+    concepts_cmd.add_argument(
+        "--schema", help="schema.json from `baseline`, to check columns against the real database"
+    )
+    concepts_cmd.set_defaults(handler=_concepts)
+
+    ledger_cmd = sub.add_parser("ledger", help="Match every source item to the target, or waive it")
+    ledger_cmd.add_argument("source", help="Path to the source repository")
+    ledger_cmd.add_argument("--target", help="Path to the target repository")
+    ledger_cmd.add_argument("--waivers", help="Waivers JSON file (key, reason, approved_by)")
+    ledger_cmd.add_argument("--out", help="Write the full ledger to this JSON file")
+    ledger_cmd.set_defaults(handler=_ledger)
 
     cleanup_cmd = sub.add_parser("cleanup", help="Remove leftover sandbox containers")
     cleanup_cmd.set_defaults(handler=_cleanup)

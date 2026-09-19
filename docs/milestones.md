@@ -8,8 +8,8 @@ Details are in [PLAN.md §14](../PLAN.md).
 | M1 | Repository analyzer + language detection + dependency graph | ✅ Done |
 | M2 | Docker sandbox: build and test the source repo | ✅ Done |
 | M3 | Behaviour baseline (run source app, record golden traces) | ✅ Done |
-| M4 | Concept model + NestJS/FastAPI adapters + ledger | ⏳ Next |
-| M5 | OpenAI LLM layer + planner + target skeleton | Not started |
+| M4 | Concept model + NestJS/FastAPI adapters + ledger | ✅ Done |
+| M5 | OpenAI LLM layer + planner + target skeleton | ⏳ Next |
 | M6 | Unit migration + fix loop | Not started |
 | M7 | Differential validation + gates + report + evals | Not started |
 | M8 | Hardening (hazards, fuzz, authz matrix, hold-out, seeded bugs) | Not started |
@@ -82,3 +82,21 @@ and running app + database together belongs with trace recording.
 
 **Already visible for later (M7):** the two apps differ, for example cancel returns 201 vs 200,
 `createdAt` vs `created_at`, and invalid input gives 400 vs 422. Differential testing must catch these.
+
+## M4: what got done
+
+- `migrator concepts <repo> [--schema schema.json]` and `migrator ledger <source> [--target ...] [--waivers ...]`
+- Canonical concept model with language-neutral keys ([docs/ledger.md](ledger.md))
+- Framework adapters: NestJS (routes, guards, DTO validation, exceptions, providers),
+  TypeORM (entities, columns, join columns), FastAPI (routers, `Depends` auth, Pydantic models,
+  `HTTPException`), SQLAlchemy (models, columns, foreign keys)
+- Schema check: columns read from code vs the real database from `baseline`
+- Ledger with mapped / mismatch / missing / waived, name-style hints, target-only items, unused waivers
+- 104 fast tests (+17 Docker tests)
+
+**Exit test result:** ✅
+- Surface extracted on both stacks: 5 routes, 4 request fields, 2 tables, 11 columns, 4 error codes,
+  4 env vars, no notes. Static columns match the real database for both apps (0 problems).
+- Ledger TypeScript → Python: 30 items, 27 mapped. The 3 others are exactly the real differences
+  we already saw in M3 traces: cancel status 201 vs 200, `total` numeric string vs decimal,
+  and `userId` vs `user_id` (with a hint). With the fixture waivers the ledger is complete.

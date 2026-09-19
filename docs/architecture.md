@@ -83,6 +83,21 @@ source files. Each picked mutant is applied, the app is rebuilt, started and rep
 Killed = some trace changed (good). Survived = weak spot in scenarios. Did not build = not counted.
 Same seed picks the same mutants every time.
 
+## Flow of `migrator concepts` and `migrator ledger`
+
+```text
+analyze → for each language: framework adapters whose packages are in the manifest
+        → tree-sitter → concept nodes (route, input_field, table, column, error, env_var)
+        → ConceptModel  (+ optional check of columns against the real DB schema)
+
+ledger: group source and target nodes by (kind, key) → mapped / mismatch / missing
+        → apply waivers → list target-only items → complete or not
+```
+
+Framework adapters live in `adapters/frameworks/` and follow `base.py`: `packages` (for
+detection) and `extract(files)` which returns nodes and notes. Adding a framework means one
+new file and one line in `adapters/frameworks/__init__.py`.
+
 ## Logging
 
 Every module uses `logging.getLogger(__name__)`; setup is in `log.py`. Logs go to stderr.
@@ -130,3 +145,9 @@ See `adapters/languages/base.py`. Every adapter gives:
   and the analyzer warns when it sees an HTTP client library.
 - Scenarios are written by hand for now. Generating them from routes comes with M4/M5.
 - Line coverage is not measured yet (planned for M8). The mutation score is the strength signal for now.
+- Framework adapters cover the common patterns only. For example FastAPI `include_router(prefix=...)`,
+  NestJS dynamic modules, TypeORM naming strategies and SQLAlchemy imperative mapping are not read yet.
+  Unsupported patterns are reported as notes. The schema check against the real database catches
+  column mistakes.
+- The ledger compares static facts only. Whether mapped items really behave the same is checked
+  by differential testing in M7.

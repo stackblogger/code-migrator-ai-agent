@@ -6,6 +6,8 @@ import pytest
 
 from migrator.baseline import BaselineStatus, create_baseline, write_baseline
 from migrator.baseline.scenarios import load_rules
+from migrator.concepts.extract import build_concept_model
+from migrator.concepts.schema_check import check_against_runtime
 from migrator.repository import LocalRepository
 from tests.conftest import FIXTURES
 
@@ -57,6 +59,9 @@ def test_fixture_is_stable_with_approved_rules(app, tmp_path):
     assert (tmp_path / "app.log").read_text().strip()
     schema = json.loads((tmp_path / "schema.json").read_text())
     assert {"table_name": "users", "type": "UNIQUE", "columns": "email"} in schema["constraints"]
+    # Static reading of the ORM code must agree with the real database.
+    concepts = build_concept_model(LocalRepository(FIXTURES / app))
+    assert check_against_runtime(concepts, schema) == []
 
 
 PROBE_APP = """

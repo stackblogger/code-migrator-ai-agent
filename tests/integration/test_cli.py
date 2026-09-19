@@ -38,3 +38,16 @@ def test_verify_exit_code_follows_result(monkeypatch, capsys):
     monkeypatch.setattr(cli, "verify_repo", fake_verify(RunStatus.INCOMPLETE))
     assert main(["verify", repo]) == 1
     assert "Result: INCOMPLETE" in capsys.readouterr().out
+
+
+def test_concepts_and_ledger_commands(tmp_path, capsys):
+    ts, py = str(FIXTURES / "ts-nestjs-shop"), str(FIXTURES / "py-fastapi-shop")
+    out = tmp_path / "concepts.json"
+    assert main(["concepts", ts, "--out", str(out)]) == 0
+    assert "POST    /orders/{id}/cancel" in capsys.readouterr().out
+    assert json.loads(out.read_text())["frameworks"] == ["nestjs", "typeorm"]
+
+    assert main(["ledger", ts, "--target", py]) == 1  # not complete without waivers
+    waivers = str(FIXTURES / "ledger" / "ts-to-py.waivers.json")
+    assert main(["ledger", ts, "--target", py, "--waivers", waivers]) == 0
+    assert "Result: COMPLETE" in capsys.readouterr().out

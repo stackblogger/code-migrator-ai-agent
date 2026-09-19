@@ -450,7 +450,7 @@ Long-running work runs in background workers, never inside a request.
 | **M1** | Repository analyzer: language, package manager, build and test tool detection; entry points; config/env discovery; tree-sitter symbols; import graph with SCCs; CLI `migrator analyze` | Snapshot tests on TS and Python fixture repos; graph and SCCs correct on a fixture with a cycle |
 | **M2** | Sandbox + toolchains: install, build, and test the **source** fixtures in Docker with limits and network phases | Source fixture tests pass in sandbox; sandbox escape/limit tests pass |
 | **M3** | Behavior baseline: run source app + its services (DB) in sandbox, harness, determinism controls, DB diffing, trace capture, self-consistency check, hold-out split, mutation score | Source-vs-source replay is 100% stable (with approved rules); mutation score reported |
-| **M4** | CCM + NestJS/FastAPI framework adapters + ledger + surface extraction | Ledger for fixture is complete; API/schema surface extracted on both stacks |
+| **M4** | CCM + NestJS/TypeORM/FastAPI/SQLAlchemy framework adapters + ledger + surface extraction + static-vs-real schema check | Ledger for fixture is complete; API/schema surface extracted on both stacks |
 | **M5** | LLM layer + planner + interface-first skeleton | Skeleton for fixture compiles and boots; plan respects SCC order |
 | **M6** | Unit migration loop + sealed tests + fix loop + git per unit | ≥ 80% of fixture units reach unit-test green; attempts/blocked tracked |
 | **M7** | Differential validation + gates G0–G6 + report + **evaluation harness** | First full NestJS→FastAPI fixture run with a truthful report; eval runs N× and reports variance |

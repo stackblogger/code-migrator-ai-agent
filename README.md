@@ -8,7 +8,7 @@ Full design is in [PLAN.md](PLAN.md). Current status is in [docs/milestones.md](
 
 ## Status
 
-**Milestones 1, 2 and 3 are done.**
+**Milestones 1 to 4 are done.**
 
 **M1: repository analyzer.** It reads a repo and tells you:
 
@@ -26,6 +26,11 @@ limits, read-only root, non-root user. Real `.env` files are never copied in.
 in an isolated network (no internet), plays [scenarios](docs/scenarios.md) against it, and records
 status, body and database changes for every request. It plays everything twice to make sure
 the results are stable, and mutation testing shows how strong the recorded traces are.
+
+**M4: concept model and ledger.** Framework adapters (NestJS, TypeORM, FastAPI, SQLAlchemy) read
+the code and list routes (status, auth), request fields (validation rules), tables and columns,
+errors and env vars in a language-neutral way. The **ledger** then checks that every source item
+exists in the target, or is waived by a person with a reason. See [docs/ledger.md](docs/ledger.md).
 
 Supported languages as of now: **TypeScript** and **Python**. No LLM is used yet.
 
@@ -73,6 +78,19 @@ Without `--rules` you will get `UNSTABLE` plus a `proposed_rules.json` to review
 Add `--mutants 10` to also get a mutation score (slow: it rebuilds and restarts the app per mutant).
 Output folder has `baseline.json` (report), `traces.json`, `holdout.json` (sealed), `schema.json`
 (database columns and constraints) and `app.log`.
+
+See the API and database surface that was found in the code. With `--schema` (from a
+`baseline` run) it also checks the columns against the real database:
+
+```bash
+uv run migrator concepts fixtures/ts-nestjs-shop --schema baseline/ts/schema.json
+```
+
+Build the ledger (source → target). Exit code is 0 only when it is complete:
+
+```bash
+uv run migrator ledger fixtures/ts-nestjs-shop --target fixtures/py-fastapi-shop --waivers fixtures/ledger/ts-to-py.waivers.json
+```
 
 ## Logs
 
@@ -125,11 +143,14 @@ src/migrator/
   analysis/        analyzer, dependency graph, config/env inventory, summary
   sandbox/         Docker sandbox, workspace copy, step runner, verify
   baseline/        run app + Postgres, scenarios, recorder, DB diff, rules, mutation testing
+  adapters/frameworks/  NestJS, TypeORM, FastAPI, SQLAlchemy -> concepts
+  concepts/        concept model, canonical keys, schema check against real DB
+  ledger/          source -> target matching, waivers
   log.py           logging setup
   cli.py           `migrator` command
 fixtures/          small sample repos + shared scenarios used in tests
 tests/             unit/, integration/, sandbox/, snapshots/
-docs/              architecture, scenarios format, milestone notes
+docs/              architecture, scenarios, ledger, milestone notes
 ```
 
 ## Configuration
