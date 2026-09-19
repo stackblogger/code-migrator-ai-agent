@@ -1,0 +1,23 @@
+services:
+  # Run the migrator CLI. Example:
+  #   docker compose run --rm migrator analyze /repos/fixtures/ts-nestjs-shop
+  migrator:
+    build:
+      context: .
+      target: app
+    image: code-migrator:latest
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ./fixtures:/repos/fixtures:ro
+      - ${REPOS_DIR:-./workspace}:/repos/workspace:ro
+      - ./reports:/reports
+    command: ["analyze", "/repos/fixtures/ts-nestjs-shop"]
+
+  # Run the test suite inside a container: docker compose run --rm tests
+  tests:
+    build:
+      context: .
+      target: dev
+    profiles: ["test"]

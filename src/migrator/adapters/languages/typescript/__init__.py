@@ -1,0 +1,44 @@
+from migrator.adapters.languages.base import LanguageAdapter
+from migrator.adapters.languages.typescript import project
+from migrator.adapters.languages.typescript.parser import parse_typescript
+from migrator.adapters.languages.typescript.resolver import NODE_BUILTINS, resolve_import
+from migrator.core.models import ImportRef, Manifest, ParsedFile
+from migrator.repository import LocalRepository
+
+TEST_SUFFIXES = (".spec.ts", ".test.ts", ".spec.tsx", ".test.tsx", ".e2e-spec.ts")
+
+
+class TypeScriptAdapter(LanguageAdapter):
+    name = "typescript"
+    extensions = (".ts", ".tsx", ".mts", ".cts")
+
+    def owns(self, path: str) -> bool:
+        return super().owns(path) and not path.endswith(".d.ts")
+
+    def is_test_file(self, path: str) -> bool:
+        return path.endswith(TEST_SUFFIXES) or "/__tests__/" in f"/{path}"
+
+    def parse_file(self, path: str, source: bytes) -> ParsedFile:
+        return parse_typescript(path, source)
+
+    def resolve_imports(self, imports: list[ImportRef], files: set[str]) -> list[ImportRef]:
+        return [resolve_import(imp, files) for imp in imports]
+
+    def read_manifests(self, repo: LocalRepository) -> list[Manifest]:
+        return project.read_manifests(repo)
+
+    def detect_tools(
+        self, repo: LocalRepository, manifests: list[Manifest]
+    ) -> dict[str, list[str]]:
+        return project.detect_tools(repo, manifests)
+
+    def find_entry_points(
+        self, repo: LocalRepository, manifests: list[Manifest], parsed: list[ParsedFile]
+    ) -> list[str]:
+        return project.find_entry_points(repo, manifests)
+
+    def is_builtin(self, package: str) -> bool:
+        return package in NODE_BUILTINS
+
+
+__all__ = ["TypeScriptAdapter"]

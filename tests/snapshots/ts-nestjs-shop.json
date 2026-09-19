@@ -1,0 +1,1899 @@
+{
+  "graph": {
+    "cycles": [
+      [
+        "src/orders/order.entity.ts",
+        "src/users/user.entity.ts"
+      ]
+    ],
+    "edges": [
+      {
+        "source": "src/app.module.ts",
+        "target": "src/auth/auth.module.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/app.module.ts",
+        "target": "src/database/database.module.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/app.module.ts",
+        "target": "src/orders/orders.module.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/app.module.ts",
+        "target": "src/users/users.module.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/auth/auth.module.ts",
+        "target": "src/auth/auth.service.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/auth/auth.module.ts",
+        "target": "src/auth/jwt-auth.guard.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/auth/auth.module.ts",
+        "target": "src/config.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/auth/auth.service.ts",
+        "target": "src/users/user.entity.ts",
+        "type_only": true
+      },
+      {
+        "source": "src/auth/jwt-auth.guard.ts",
+        "target": "src/auth/auth.service.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/database/database.module.ts",
+        "target": "src/config.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/database/database.module.ts",
+        "target": "src/orders/order.entity.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/database/database.module.ts",
+        "target": "src/users/user.entity.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/main.ts",
+        "target": "src/app.module.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/main.ts",
+        "target": "src/config.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/order.entity.ts",
+        "target": "src/users/user.entity.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/orders.controller.ts",
+        "target": "src/auth/auth.service.ts",
+        "type_only": true
+      },
+      {
+        "source": "src/orders/orders.controller.ts",
+        "target": "src/auth/jwt-auth.guard.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/orders.controller.ts",
+        "target": "src/orders/dto/create-order.dto.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/orders.controller.ts",
+        "target": "src/orders/order.entity.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/orders.controller.ts",
+        "target": "src/orders/orders.service.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/orders.module.ts",
+        "target": "src/orders/order.entity.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/orders.module.ts",
+        "target": "src/orders/orders.controller.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/orders.module.ts",
+        "target": "src/orders/orders.service.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/orders.module.ts",
+        "target": "src/users/users.module.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/orders.service.ts",
+        "target": "src/orders/dto/create-order.dto.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/orders.service.ts",
+        "target": "src/orders/order.entity.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/orders/orders.service.ts",
+        "target": "src/users/users.service.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/users/user.entity.ts",
+        "target": "src/orders/order.entity.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/users/users.controller.ts",
+        "target": "src/auth/jwt-auth.guard.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/users/users.controller.ts",
+        "target": "src/users/dto/create-user.dto.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/users/users.controller.ts",
+        "target": "src/users/users.service.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/users/users.module.ts",
+        "target": "src/users/user.entity.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/users/users.module.ts",
+        "target": "src/users/users.controller.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/users/users.module.ts",
+        "target": "src/users/users.service.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/users/users.service.ts",
+        "target": "src/auth/auth.service.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/users/users.service.ts",
+        "target": "src/users/dto/create-user.dto.ts",
+        "type_only": false
+      },
+      {
+        "source": "src/users/users.service.ts",
+        "target": "src/users/user.entity.ts",
+        "type_only": false
+      },
+      {
+        "source": "test/orders.service.spec.ts",
+        "target": "src/orders/order.entity.ts",
+        "type_only": false
+      },
+      {
+        "source": "test/orders.service.spec.ts",
+        "target": "src/orders/orders.service.ts",
+        "type_only": false
+      }
+    ],
+    "migration_order": [
+      [
+        "src/config.ts"
+      ],
+      [
+        "src/orders/dto/create-order.dto.ts"
+      ],
+      [
+        "src/orders/order.entity.ts",
+        "src/users/user.entity.ts"
+      ],
+      [
+        "src/auth/auth.service.ts"
+      ],
+      [
+        "src/auth/jwt-auth.guard.ts"
+      ],
+      [
+        "src/auth/auth.module.ts"
+      ],
+      [
+        "src/database/database.module.ts"
+      ],
+      [
+        "src/users/dto/create-user.dto.ts"
+      ],
+      [
+        "src/users/users.service.ts"
+      ],
+      [
+        "src/orders/orders.service.ts"
+      ],
+      [
+        "src/orders/orders.controller.ts"
+      ],
+      [
+        "src/users/users.controller.ts"
+      ],
+      [
+        "src/users/users.module.ts"
+      ],
+      [
+        "src/orders/orders.module.ts"
+      ],
+      [
+        "src/app.module.ts"
+      ],
+      [
+        "src/main.ts"
+      ],
+      [
+        "test/orders.service.spec.ts"
+      ]
+    ],
+    "nodes": [
+      "src/app.module.ts",
+      "src/auth/auth.module.ts",
+      "src/auth/auth.service.ts",
+      "src/auth/jwt-auth.guard.ts",
+      "src/config.ts",
+      "src/database/database.module.ts",
+      "src/main.ts",
+      "src/orders/dto/create-order.dto.ts",
+      "src/orders/order.entity.ts",
+      "src/orders/orders.controller.ts",
+      "src/orders/orders.module.ts",
+      "src/orders/orders.service.ts",
+      "src/users/dto/create-user.dto.ts",
+      "src/users/user.entity.ts",
+      "src/users/users.controller.ts",
+      "src/users/users.module.ts",
+      "src/users/users.service.ts",
+      "test/orders.service.spec.ts"
+    ]
+  },
+  "imports": [
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/app.module.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "Module"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/app.module.ts",
+      "line": 2,
+      "module": "./auth/auth.module",
+      "names": [
+        "AuthModule"
+      ],
+      "targets": [
+        "src/auth/auth.module.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/app.module.ts",
+      "line": 3,
+      "module": "./database/database.module",
+      "names": [
+        "DatabaseModule"
+      ],
+      "targets": [
+        "src/database/database.module.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/app.module.ts",
+      "line": 4,
+      "module": "./orders/orders.module",
+      "names": [
+        "OrdersModule"
+      ],
+      "targets": [
+        "src/orders/orders.module.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/app.module.ts",
+      "line": 5,
+      "module": "./users/users.module",
+      "names": [
+        "UsersModule"
+      ],
+      "targets": [
+        "src/users/users.module.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/auth/auth.module.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "Global",
+        "Module"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/jwt",
+      "file": "src/auth/auth.module.ts",
+      "line": 2,
+      "module": "@nestjs/jwt",
+      "names": [
+        "JwtModule"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/auth/auth.module.ts",
+      "line": 3,
+      "module": "../config",
+      "names": [
+        "config"
+      ],
+      "targets": [
+        "src/config.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/auth/auth.module.ts",
+      "line": 4,
+      "module": "./auth.service",
+      "names": [
+        "AuthService"
+      ],
+      "targets": [
+        "src/auth/auth.service.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/auth/auth.module.ts",
+      "line": 5,
+      "module": "./jwt-auth.guard",
+      "names": [
+        "JwtAuthGuard"
+      ],
+      "targets": [
+        "src/auth/jwt-auth.guard.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/auth/auth.service.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "Injectable",
+        "UnauthorizedException"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/jwt",
+      "file": "src/auth/auth.service.ts",
+      "line": 2,
+      "module": "@nestjs/jwt",
+      "names": [
+        "JwtService"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "crypto",
+      "file": "src/auth/auth.service.ts",
+      "line": 3,
+      "module": "crypto",
+      "names": [
+        "createHash"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/auth/auth.service.ts",
+      "line": 4,
+      "module": "../users/user.entity",
+      "names": [
+        "User"
+      ],
+      "targets": [
+        "src/users/user.entity.ts"
+      ],
+      "type_only": true
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/auth/jwt-auth.guard.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "CanActivate",
+        "ExecutionContext",
+        "Injectable",
+        "UnauthorizedException"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/auth/jwt-auth.guard.ts",
+      "line": 2,
+      "module": "./auth.service",
+      "names": [
+        "AuthService"
+      ],
+      "targets": [
+        "src/auth/auth.service.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/database/database.module.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "Module"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/typeorm",
+      "file": "src/database/database.module.ts",
+      "line": 2,
+      "module": "@nestjs/typeorm",
+      "names": [
+        "TypeOrmModule"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/database/database.module.ts",
+      "line": 3,
+      "module": "../config",
+      "names": [
+        "config"
+      ],
+      "targets": [
+        "src/config.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/database/database.module.ts",
+      "line": 4,
+      "module": "../orders/order.entity",
+      "names": [
+        "Order"
+      ],
+      "targets": [
+        "src/orders/order.entity.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/database/database.module.ts",
+      "line": 5,
+      "module": "../users/user.entity",
+      "names": [
+        "User"
+      ],
+      "targets": [
+        "src/users/user.entity.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "reflect-metadata",
+      "file": "src/main.ts",
+      "line": 1,
+      "module": "reflect-metadata",
+      "names": [],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/main.ts",
+      "line": 2,
+      "module": "@nestjs/common",
+      "names": [
+        "ValidationPipe"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/core",
+      "file": "src/main.ts",
+      "line": 3,
+      "module": "@nestjs/core",
+      "names": [
+        "NestFactory"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/main.ts",
+      "line": 4,
+      "module": "./app.module",
+      "names": [
+        "AppModule"
+      ],
+      "targets": [
+        "src/app.module.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/main.ts",
+      "line": 5,
+      "module": "./config",
+      "names": [
+        "config"
+      ],
+      "targets": [
+        "src/config.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "class-validator",
+      "file": "src/orders/dto/create-order.dto.ts",
+      "line": 1,
+      "module": "class-validator",
+      "names": [
+        "IsNumberString",
+        "IsOptional",
+        "IsString",
+        "MaxLength"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "typeorm",
+      "file": "src/orders/order.entity.ts",
+      "line": 1,
+      "module": "typeorm",
+      "names": [
+        "Column",
+        "CreateDateColumn",
+        "Entity",
+        "ManyToOne",
+        "PrimaryGeneratedColumn"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/order.entity.ts",
+      "line": 2,
+      "module": "../users/user.entity",
+      "names": [
+        "User"
+      ],
+      "targets": [
+        "src/users/user.entity.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/orders/orders.controller.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "Body",
+        "Controller",
+        "Get",
+        "Param",
+        "ParseIntPipe",
+        "Post",
+        "Req",
+        "UseGuards"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.controller.ts",
+      "line": 2,
+      "module": "../auth/jwt-auth.guard",
+      "names": [
+        "JwtAuthGuard"
+      ],
+      "targets": [
+        "src/auth/jwt-auth.guard.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.controller.ts",
+      "line": 3,
+      "module": "../auth/auth.service",
+      "names": [
+        "TokenPayload"
+      ],
+      "targets": [
+        "src/auth/auth.service.ts"
+      ],
+      "type_only": true
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.controller.ts",
+      "line": 4,
+      "module": "./dto/create-order.dto",
+      "names": [
+        "CreateOrderDto"
+      ],
+      "targets": [
+        "src/orders/dto/create-order.dto.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.controller.ts",
+      "line": 5,
+      "module": "./order.entity",
+      "names": [
+        "Order"
+      ],
+      "targets": [
+        "src/orders/order.entity.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.controller.ts",
+      "line": 6,
+      "module": "./orders.service",
+      "names": [
+        "OrdersService"
+      ],
+      "targets": [
+        "src/orders/orders.service.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/orders/orders.module.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "Module"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/typeorm",
+      "file": "src/orders/orders.module.ts",
+      "line": 2,
+      "module": "@nestjs/typeorm",
+      "names": [
+        "TypeOrmModule"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.module.ts",
+      "line": 3,
+      "module": "../users/users.module",
+      "names": [
+        "UsersModule"
+      ],
+      "targets": [
+        "src/users/users.module.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.module.ts",
+      "line": 4,
+      "module": "./order.entity",
+      "names": [
+        "Order"
+      ],
+      "targets": [
+        "src/orders/order.entity.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.module.ts",
+      "line": 5,
+      "module": "./orders.controller",
+      "names": [
+        "OrdersController"
+      ],
+      "targets": [
+        "src/orders/orders.controller.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.module.ts",
+      "line": 6,
+      "module": "./orders.service",
+      "names": [
+        "OrdersService"
+      ],
+      "targets": [
+        "src/orders/orders.service.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/orders/orders.service.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "BadRequestException",
+        "Injectable",
+        "NotFoundException"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/typeorm",
+      "file": "src/orders/orders.service.ts",
+      "line": 2,
+      "module": "@nestjs/typeorm",
+      "names": [
+        "InjectRepository"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "typeorm",
+      "file": "src/orders/orders.service.ts",
+      "line": 3,
+      "module": "typeorm",
+      "names": [
+        "Repository"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.service.ts",
+      "line": 4,
+      "module": "../users/users.service",
+      "names": [
+        "UsersService"
+      ],
+      "targets": [
+        "src/users/users.service.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.service.ts",
+      "line": 5,
+      "module": "./dto/create-order.dto",
+      "names": [
+        "CreateOrderDto"
+      ],
+      "targets": [
+        "src/orders/dto/create-order.dto.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/orders/orders.service.ts",
+      "line": 6,
+      "module": "./order.entity",
+      "names": [
+        "Order",
+        "OrderStatus"
+      ],
+      "targets": [
+        "src/orders/order.entity.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "class-validator",
+      "file": "src/users/dto/create-user.dto.ts",
+      "line": 1,
+      "module": "class-validator",
+      "names": [
+        "IsEmail",
+        "MinLength"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "typeorm",
+      "file": "src/users/user.entity.ts",
+      "line": 1,
+      "module": "typeorm",
+      "names": [
+        "Column",
+        "CreateDateColumn",
+        "Entity",
+        "OneToMany",
+        "PrimaryGeneratedColumn"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/users/user.entity.ts",
+      "line": 2,
+      "module": "../orders/order.entity",
+      "names": [
+        "Order"
+      ],
+      "targets": [
+        "src/orders/order.entity.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/users/users.controller.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "Body",
+        "Controller",
+        "Get",
+        "Param",
+        "ParseIntPipe",
+        "Post",
+        "UseGuards"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/users/users.controller.ts",
+      "line": 2,
+      "module": "../auth/jwt-auth.guard",
+      "names": [
+        "JwtAuthGuard"
+      ],
+      "targets": [
+        "src/auth/jwt-auth.guard.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/users/users.controller.ts",
+      "line": 3,
+      "module": "./dto/create-user.dto",
+      "names": [
+        "CreateUserDto"
+      ],
+      "targets": [
+        "src/users/dto/create-user.dto.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/users/users.controller.ts",
+      "line": 4,
+      "module": "./users.service",
+      "names": [
+        "UsersService"
+      ],
+      "targets": [
+        "src/users/users.service.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/users/users.module.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "Module"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/typeorm",
+      "file": "src/users/users.module.ts",
+      "line": 2,
+      "module": "@nestjs/typeorm",
+      "names": [
+        "TypeOrmModule"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/users/users.module.ts",
+      "line": 3,
+      "module": "./user.entity",
+      "names": [
+        "User"
+      ],
+      "targets": [
+        "src/users/user.entity.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/users/users.module.ts",
+      "line": 4,
+      "module": "./users.controller",
+      "names": [
+        "UsersController"
+      ],
+      "targets": [
+        "src/users/users.controller.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/users/users.module.ts",
+      "line": 5,
+      "module": "./users.service",
+      "names": [
+        "UsersService"
+      ],
+      "targets": [
+        "src/users/users.service.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "src/users/users.service.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "ConflictException",
+        "Injectable",
+        "NotFoundException"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/typeorm",
+      "file": "src/users/users.service.ts",
+      "line": 2,
+      "module": "@nestjs/typeorm",
+      "names": [
+        "InjectRepository"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "typeorm",
+      "file": "src/users/users.service.ts",
+      "line": 3,
+      "module": "typeorm",
+      "names": [
+        "Repository"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/users/users.service.ts",
+      "line": 4,
+      "module": "../auth/auth.service",
+      "names": [
+        "AuthService"
+      ],
+      "targets": [
+        "src/auth/auth.service.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/users/users.service.ts",
+      "line": 5,
+      "module": "./dto/create-user.dto",
+      "names": [
+        "CreateUserDto"
+      ],
+      "targets": [
+        "src/users/dto/create-user.dto.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "src/users/users.service.ts",
+      "line": 6,
+      "module": "./user.entity",
+      "names": [
+        "User"
+      ],
+      "targets": [
+        "src/users/user.entity.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "@nestjs/common",
+      "file": "test/orders.service.spec.ts",
+      "line": 1,
+      "module": "@nestjs/common",
+      "names": [
+        "BadRequestException"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "test/orders.service.spec.ts",
+      "line": 2,
+      "module": "../src/orders/orders.service",
+      "names": [
+        "OrdersService"
+      ],
+      "targets": [
+        "src/orders/orders.service.ts"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "test/orders.service.spec.ts",
+      "line": 3,
+      "module": "../src/orders/order.entity",
+      "names": [
+        "OrderStatus"
+      ],
+      "targets": [
+        "src/orders/order.entity.ts"
+      ],
+      "type_only": false
+    }
+  ],
+  "inventory": {
+    "config_files": [
+      ".env.example",
+      "nest-cli.json",
+      "package.json",
+      "tsconfig.json"
+    ],
+    "env_vars": {
+      "DATABASE_URL": [
+        ".env.example",
+        "src/config.ts"
+      ],
+      "JWT_EXPIRES_IN": [
+        ".env.example",
+        "src/config.ts"
+      ],
+      "JWT_SECRET": [
+        ".env.example",
+        "src/config.ts"
+      ],
+      "PORT": [
+        ".env.example",
+        "src/config.ts"
+      ]
+    },
+    "languages": [
+      {
+        "entry_points": [
+          "src/main.ts"
+        ],
+        "external_packages": [
+          "@nestjs/common",
+          "@nestjs/core",
+          "@nestjs/jwt",
+          "@nestjs/typeorm",
+          "class-validator",
+          "reflect-metadata",
+          "typeorm"
+        ],
+        "language": "typescript",
+        "manifests": [
+          {
+            "dependencies": {
+              "@nestjs/common": "^10.4.0",
+              "@nestjs/core": "^10.4.0",
+              "@nestjs/jwt": "^10.2.0",
+              "@nestjs/platform-express": "^10.4.0",
+              "@nestjs/typeorm": "^10.0.2",
+              "class-transformer": "^0.5.1",
+              "class-validator": "^0.14.1",
+              "pg": "^8.12.0",
+              "reflect-metadata": "^0.2.2",
+              "rxjs": "^7.8.1",
+              "typeorm": "^0.3.20"
+            },
+            "dev_dependencies": {
+              "@nestjs/cli": "^10.4.0",
+              "@nestjs/testing": "^10.4.0",
+              "@types/jest": "^29.5.12",
+              "@types/node": "^20.14.0",
+              "eslint": "^8.57.0",
+              "jest": "^29.7.0",
+              "prettier": "^3.3.0",
+              "ts-jest": "^29.2.0",
+              "typescript": "^5.5.0"
+            },
+            "file": "package.json",
+            "package_manager": "npm",
+            "scripts": {
+              "build": "nest build",
+              "lint": "eslint \"src/**/*.ts\"",
+              "start": "node dist/main.js",
+              "test": "jest"
+            }
+          }
+        ],
+        "source_files": [
+          "src/app.module.ts",
+          "src/auth/auth.module.ts",
+          "src/auth/auth.service.ts",
+          "src/auth/jwt-auth.guard.ts",
+          "src/config.ts",
+          "src/database/database.module.ts",
+          "src/main.ts",
+          "src/orders/dto/create-order.dto.ts",
+          "src/orders/order.entity.ts",
+          "src/orders/orders.controller.ts",
+          "src/orders/orders.module.ts",
+          "src/orders/orders.service.ts",
+          "src/users/dto/create-user.dto.ts",
+          "src/users/user.entity.ts",
+          "src/users/users.controller.ts",
+          "src/users/users.module.ts",
+          "src/users/users.service.ts"
+        ],
+        "test_files": [
+          "test/orders.service.spec.ts"
+        ],
+        "tools": {
+          "build": [
+            "nest",
+            "tsc"
+          ],
+          "format": [
+            "prettier"
+          ],
+          "lint": [
+            "eslint"
+          ],
+          "test": [
+            "jest"
+          ],
+          "typecheck": [
+            "tsc"
+          ]
+        }
+      }
+    ],
+    "repo_name": "ts-nestjs-shop",
+    "total_files": 23
+  },
+  "symbols": [
+    {
+      "decorators": [
+        "Module"
+      ],
+      "end_line": 10,
+      "exported": true,
+      "file": "src/app.module.ts",
+      "kind": "class",
+      "name": "AppModule",
+      "parent": null,
+      "start_line": 10
+    },
+    {
+      "decorators": [
+        "Global",
+        "Module"
+      ],
+      "end_line": 13,
+      "exported": true,
+      "file": "src/auth/auth.module.ts",
+      "kind": "class",
+      "name": "AuthModule",
+      "parent": null,
+      "start_line": 13
+    },
+    {
+      "decorators": [],
+      "end_line": 9,
+      "exported": true,
+      "file": "src/auth/auth.service.ts",
+      "kind": "interface",
+      "name": "TokenPayload",
+      "parent": null,
+      "start_line": 6
+    },
+    {
+      "decorators": [
+        "Injectable"
+      ],
+      "end_line": 30,
+      "exported": true,
+      "file": "src/auth/auth.service.ts",
+      "kind": "class",
+      "name": "AuthService",
+      "parent": null,
+      "start_line": 12
+    },
+    {
+      "decorators": [],
+      "end_line": 13,
+      "exported": false,
+      "file": "src/auth/auth.service.ts",
+      "kind": "method",
+      "name": "constructor",
+      "parent": "AuthService",
+      "start_line": 13
+    },
+    {
+      "decorators": [],
+      "end_line": 17,
+      "exported": false,
+      "file": "src/auth/auth.service.ts",
+      "kind": "method",
+      "name": "hashPassword",
+      "parent": "AuthService",
+      "start_line": 15
+    },
+    {
+      "decorators": [],
+      "end_line": 21,
+      "exported": false,
+      "file": "src/auth/auth.service.ts",
+      "kind": "method",
+      "name": "issueToken",
+      "parent": "AuthService",
+      "start_line": 19
+    },
+    {
+      "decorators": [],
+      "end_line": 29,
+      "exported": false,
+      "file": "src/auth/auth.service.ts",
+      "kind": "method",
+      "name": "verifyToken",
+      "parent": "AuthService",
+      "start_line": 23
+    },
+    {
+      "decorators": [
+        "Injectable"
+      ],
+      "end_line": 17,
+      "exported": true,
+      "file": "src/auth/jwt-auth.guard.ts",
+      "kind": "class",
+      "name": "JwtAuthGuard",
+      "parent": null,
+      "start_line": 5
+    },
+    {
+      "decorators": [],
+      "end_line": 6,
+      "exported": false,
+      "file": "src/auth/jwt-auth.guard.ts",
+      "kind": "method",
+      "name": "constructor",
+      "parent": "JwtAuthGuard",
+      "start_line": 6
+    },
+    {
+      "decorators": [],
+      "end_line": 16,
+      "exported": false,
+      "file": "src/auth/jwt-auth.guard.ts",
+      "kind": "method",
+      "name": "canActivate",
+      "parent": "JwtAuthGuard",
+      "start_line": 8
+    },
+    {
+      "decorators": [],
+      "end_line": 6,
+      "exported": true,
+      "file": "src/config.ts",
+      "kind": "variable",
+      "name": "config",
+      "parent": null,
+      "start_line": 1
+    },
+    {
+      "decorators": [
+        "Module"
+      ],
+      "end_line": 17,
+      "exported": true,
+      "file": "src/database/database.module.ts",
+      "kind": "class",
+      "name": "DatabaseModule",
+      "parent": null,
+      "start_line": 17
+    },
+    {
+      "decorators": [],
+      "end_line": 11,
+      "exported": false,
+      "file": "src/main.ts",
+      "kind": "function",
+      "name": "bootstrap",
+      "parent": null,
+      "start_line": 7
+    },
+    {
+      "decorators": [],
+      "end_line": 11,
+      "exported": true,
+      "file": "src/orders/dto/create-order.dto.ts",
+      "kind": "class",
+      "name": "CreateOrderDto",
+      "parent": null,
+      "start_line": 3
+    },
+    {
+      "decorators": [
+        "IsNumberString"
+      ],
+      "end_line": 5,
+      "exported": false,
+      "file": "src/orders/dto/create-order.dto.ts",
+      "kind": "field",
+      "name": "total",
+      "parent": "CreateOrderDto",
+      "start_line": 4
+    },
+    {
+      "decorators": [
+        "IsOptional",
+        "IsString",
+        "MaxLength"
+      ],
+      "end_line": 10,
+      "exported": false,
+      "file": "src/orders/dto/create-order.dto.ts",
+      "kind": "field",
+      "name": "note",
+      "parent": "CreateOrderDto",
+      "start_line": 7
+    },
+    {
+      "decorators": [],
+      "end_line": 8,
+      "exported": true,
+      "file": "src/orders/order.entity.ts",
+      "kind": "enum",
+      "name": "OrderStatus",
+      "parent": null,
+      "start_line": 4
+    },
+    {
+      "decorators": [
+        "Entity"
+      ],
+      "end_line": 29,
+      "exported": true,
+      "file": "src/orders/order.entity.ts",
+      "kind": "class",
+      "name": "Order",
+      "parent": null,
+      "start_line": 11
+    },
+    {
+      "decorators": [
+        "PrimaryGeneratedColumn"
+      ],
+      "end_line": 13,
+      "exported": false,
+      "file": "src/orders/order.entity.ts",
+      "kind": "field",
+      "name": "id",
+      "parent": "Order",
+      "start_line": 12
+    },
+    {
+      "decorators": [
+        "ManyToOne"
+      ],
+      "end_line": 16,
+      "exported": false,
+      "file": "src/orders/order.entity.ts",
+      "kind": "field",
+      "name": "user",
+      "parent": "Order",
+      "start_line": 15
+    },
+    {
+      "decorators": [
+        "Column"
+      ],
+      "end_line": 19,
+      "exported": false,
+      "file": "src/orders/order.entity.ts",
+      "kind": "field",
+      "name": "total",
+      "parent": "Order",
+      "start_line": 18
+    },
+    {
+      "decorators": [
+        "Column"
+      ],
+      "end_line": 22,
+      "exported": false,
+      "file": "src/orders/order.entity.ts",
+      "kind": "field",
+      "name": "status",
+      "parent": "Order",
+      "start_line": 21
+    },
+    {
+      "decorators": [
+        "Column"
+      ],
+      "end_line": 25,
+      "exported": false,
+      "file": "src/orders/order.entity.ts",
+      "kind": "field",
+      "name": "note",
+      "parent": "Order",
+      "start_line": 24
+    },
+    {
+      "decorators": [
+        "CreateDateColumn"
+      ],
+      "end_line": 28,
+      "exported": false,
+      "file": "src/orders/order.entity.ts",
+      "kind": "field",
+      "name": "createdAt",
+      "parent": "Order",
+      "start_line": 27
+    },
+    {
+      "decorators": [],
+      "end_line": 16,
+      "exported": false,
+      "file": "src/orders/orders.controller.ts",
+      "kind": "function",
+      "name": "toResponse",
+      "parent": null,
+      "start_line": 8
+    },
+    {
+      "decorators": [
+        "UseGuards",
+        "Controller"
+      ],
+      "end_line": 38,
+      "exported": true,
+      "file": "src/orders/orders.controller.ts",
+      "kind": "class",
+      "name": "OrdersController",
+      "parent": null,
+      "start_line": 20
+    },
+    {
+      "decorators": [],
+      "end_line": 21,
+      "exported": false,
+      "file": "src/orders/orders.controller.ts",
+      "kind": "method",
+      "name": "constructor",
+      "parent": "OrdersController",
+      "start_line": 21
+    },
+    {
+      "decorators": [
+        "Post"
+      ],
+      "end_line": 26,
+      "exported": false,
+      "file": "src/orders/orders.controller.ts",
+      "kind": "method",
+      "name": "create",
+      "parent": "OrdersController",
+      "start_line": 24
+    },
+    {
+      "decorators": [
+        "Get"
+      ],
+      "end_line": 32,
+      "exported": false,
+      "file": "src/orders/orders.controller.ts",
+      "kind": "method",
+      "name": "list",
+      "parent": "OrdersController",
+      "start_line": 29
+    },
+    {
+      "decorators": [
+        "Post"
+      ],
+      "end_line": 37,
+      "exported": false,
+      "file": "src/orders/orders.controller.ts",
+      "kind": "method",
+      "name": "cancel",
+      "parent": "OrdersController",
+      "start_line": 35
+    },
+    {
+      "decorators": [
+        "Module"
+      ],
+      "end_line": 13,
+      "exported": true,
+      "file": "src/orders/orders.module.ts",
+      "kind": "class",
+      "name": "OrdersModule",
+      "parent": null,
+      "start_line": 13
+    },
+    {
+      "decorators": [
+        "Injectable"
+      ],
+      "end_line": 42,
+      "exported": true,
+      "file": "src/orders/orders.service.ts",
+      "kind": "class",
+      "name": "OrdersService",
+      "parent": null,
+      "start_line": 9
+    },
+    {
+      "decorators": [],
+      "end_line": 13,
+      "exported": false,
+      "file": "src/orders/orders.service.ts",
+      "kind": "method",
+      "name": "constructor",
+      "parent": "OrdersService",
+      "start_line": 10
+    },
+    {
+      "decorators": [],
+      "end_line": 22,
+      "exported": false,
+      "file": "src/orders/orders.service.ts",
+      "kind": "method",
+      "name": "create",
+      "parent": "OrdersService",
+      "start_line": 15
+    },
+    {
+      "decorators": [],
+      "end_line": 29,
+      "exported": false,
+      "file": "src/orders/orders.service.ts",
+      "kind": "method",
+      "name": "listForUser",
+      "parent": "OrdersService",
+      "start_line": 24
+    },
+    {
+      "decorators": [],
+      "end_line": 41,
+      "exported": false,
+      "file": "src/orders/orders.service.ts",
+      "kind": "method",
+      "name": "cancel",
+      "parent": "OrdersService",
+      "start_line": 31
+    },
+    {
+      "decorators": [],
+      "end_line": 9,
+      "exported": true,
+      "file": "src/users/dto/create-user.dto.ts",
+      "kind": "class",
+      "name": "CreateUserDto",
+      "parent": null,
+      "start_line": 3
+    },
+    {
+      "decorators": [
+        "IsEmail"
+      ],
+      "end_line": 5,
+      "exported": false,
+      "file": "src/users/dto/create-user.dto.ts",
+      "kind": "field",
+      "name": "email",
+      "parent": "CreateUserDto",
+      "start_line": 4
+    },
+    {
+      "decorators": [
+        "MinLength"
+      ],
+      "end_line": 8,
+      "exported": false,
+      "file": "src/users/dto/create-user.dto.ts",
+      "kind": "field",
+      "name": "password",
+      "parent": "CreateUserDto",
+      "start_line": 7
+    },
+    {
+      "decorators": [
+        "Entity"
+      ],
+      "end_line": 23,
+      "exported": true,
+      "file": "src/users/user.entity.ts",
+      "kind": "class",
+      "name": "User",
+      "parent": null,
+      "start_line": 5
+    },
+    {
+      "decorators": [
+        "PrimaryGeneratedColumn"
+      ],
+      "end_line": 7,
+      "exported": false,
+      "file": "src/users/user.entity.ts",
+      "kind": "field",
+      "name": "id",
+      "parent": "User",
+      "start_line": 6
+    },
+    {
+      "decorators": [
+        "Column"
+      ],
+      "end_line": 10,
+      "exported": false,
+      "file": "src/users/user.entity.ts",
+      "kind": "field",
+      "name": "email",
+      "parent": "User",
+      "start_line": 9
+    },
+    {
+      "decorators": [
+        "Column"
+      ],
+      "end_line": 13,
+      "exported": false,
+      "file": "src/users/user.entity.ts",
+      "kind": "field",
+      "name": "passwordHash",
+      "parent": "User",
+      "start_line": 12
+    },
+    {
+      "decorators": [
+        "Column"
+      ],
+      "end_line": 16,
+      "exported": false,
+      "file": "src/users/user.entity.ts",
+      "kind": "field",
+      "name": "role",
+      "parent": "User",
+      "start_line": 15
+    },
+    {
+      "decorators": [
+        "CreateDateColumn"
+      ],
+      "end_line": 19,
+      "exported": false,
+      "file": "src/users/user.entity.ts",
+      "kind": "field",
+      "name": "createdAt",
+      "parent": "User",
+      "start_line": 18
+    },
+    {
+      "decorators": [
+        "OneToMany"
+      ],
+      "end_line": 22,
+      "exported": false,
+      "file": "src/users/user.entity.ts",
+      "kind": "field",
+      "name": "orders",
+      "parent": "User",
+      "start_line": 21
+    },
+    {
+      "decorators": [
+        "Controller"
+      ],
+      "end_line": 22,
+      "exported": true,
+      "file": "src/users/users.controller.ts",
+      "kind": "class",
+      "name": "UsersController",
+      "parent": null,
+      "start_line": 7
+    },
+    {
+      "decorators": [],
+      "end_line": 8,
+      "exported": false,
+      "file": "src/users/users.controller.ts",
+      "kind": "method",
+      "name": "constructor",
+      "parent": "UsersController",
+      "start_line": 8
+    },
+    {
+      "decorators": [
+        "Post"
+      ],
+      "end_line": 14,
+      "exported": false,
+      "file": "src/users/users.controller.ts",
+      "kind": "method",
+      "name": "register",
+      "parent": "UsersController",
+      "start_line": 11
+    },
+    {
+      "decorators": [
+        "UseGuards",
+        "Get"
+      ],
+      "end_line": 21,
+      "exported": false,
+      "file": "src/users/users.controller.ts",
+      "kind": "method",
+      "name": "findOne",
+      "parent": "UsersController",
+      "start_line": 18
+    },
+    {
+      "decorators": [
+        "Module"
+      ],
+      "end_line": 13,
+      "exported": true,
+      "file": "src/users/users.module.ts",
+      "kind": "class",
+      "name": "UsersModule",
+      "parent": null,
+      "start_line": 13
+    },
+    {
+      "decorators": [
+        "Injectable"
+      ],
+      "end_line": 34,
+      "exported": true,
+      "file": "src/users/users.service.ts",
+      "kind": "class",
+      "name": "UsersService",
+      "parent": null,
+      "start_line": 9
+    },
+    {
+      "decorators": [],
+      "end_line": 13,
+      "exported": false,
+      "file": "src/users/users.service.ts",
+      "kind": "method",
+      "name": "constructor",
+      "parent": "UsersService",
+      "start_line": 10
+    },
+    {
+      "decorators": [],
+      "end_line": 25,
+      "exported": false,
+      "file": "src/users/users.service.ts",
+      "kind": "method",
+      "name": "create",
+      "parent": "UsersService",
+      "start_line": 15
+    },
+    {
+      "decorators": [],
+      "end_line": 33,
+      "exported": false,
+      "file": "src/users/users.service.ts",
+      "kind": "method",
+      "name": "findById",
+      "parent": "UsersService",
+      "start_line": 27
+    }
+  ],
+  "warnings": []
+}

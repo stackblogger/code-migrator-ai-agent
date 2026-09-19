@@ -1,0 +1,1874 @@
+{
+  "graph": {
+    "cycles": [
+      [
+        "app/orders/models.py",
+        "app/users/models.py"
+      ]
+    ],
+    "edges": [
+      {
+        "source": "app/auth/dependencies.py",
+        "target": "app/auth/security.py",
+        "type_only": false
+      },
+      {
+        "source": "app/auth/security.py",
+        "target": "app/config.py",
+        "type_only": false
+      },
+      {
+        "source": "app/database.py",
+        "target": "app/config.py",
+        "type_only": false
+      },
+      {
+        "source": "app/main.py",
+        "target": "app/config.py",
+        "type_only": false
+      },
+      {
+        "source": "app/main.py",
+        "target": "app/database.py",
+        "type_only": false
+      },
+      {
+        "source": "app/main.py",
+        "target": "app/orders/router.py",
+        "type_only": false
+      },
+      {
+        "source": "app/main.py",
+        "target": "app/users/router.py",
+        "type_only": false
+      },
+      {
+        "source": "app/orders/models.py",
+        "target": "app/database.py",
+        "type_only": false
+      },
+      {
+        "source": "app/orders/models.py",
+        "target": "app/users/models.py",
+        "type_only": true
+      },
+      {
+        "source": "app/orders/router.py",
+        "target": "app/auth/dependencies.py",
+        "type_only": false
+      },
+      {
+        "source": "app/orders/router.py",
+        "target": "app/database.py",
+        "type_only": false
+      },
+      {
+        "source": "app/orders/router.py",
+        "target": "app/orders/schemas.py",
+        "type_only": false
+      },
+      {
+        "source": "app/orders/router.py",
+        "target": "app/orders/service.py",
+        "type_only": false
+      },
+      {
+        "source": "app/orders/service.py",
+        "target": "app/orders/models.py",
+        "type_only": false
+      },
+      {
+        "source": "app/orders/service.py",
+        "target": "app/orders/schemas.py",
+        "type_only": false
+      },
+      {
+        "source": "app/orders/service.py",
+        "target": "app/users/service.py",
+        "type_only": false
+      },
+      {
+        "source": "app/users/models.py",
+        "target": "app/database.py",
+        "type_only": false
+      },
+      {
+        "source": "app/users/models.py",
+        "target": "app/orders/models.py",
+        "type_only": true
+      },
+      {
+        "source": "app/users/router.py",
+        "target": "app/auth/dependencies.py",
+        "type_only": false
+      },
+      {
+        "source": "app/users/router.py",
+        "target": "app/database.py",
+        "type_only": false
+      },
+      {
+        "source": "app/users/router.py",
+        "target": "app/users/schemas.py",
+        "type_only": false
+      },
+      {
+        "source": "app/users/router.py",
+        "target": "app/users/service.py",
+        "type_only": false
+      },
+      {
+        "source": "app/users/service.py",
+        "target": "app/auth/security.py",
+        "type_only": false
+      },
+      {
+        "source": "app/users/service.py",
+        "target": "app/users/models.py",
+        "type_only": false
+      },
+      {
+        "source": "app/users/service.py",
+        "target": "app/users/schemas.py",
+        "type_only": false
+      },
+      {
+        "source": "tests/test_orders.py",
+        "target": "app/orders/models.py",
+        "type_only": false
+      },
+      {
+        "source": "tests/test_orders.py",
+        "target": "app/orders/schemas.py",
+        "type_only": false
+      },
+      {
+        "source": "tests/test_orders.py",
+        "target": "app/orders/service.py",
+        "type_only": false
+      }
+    ],
+    "migration_order": [
+      [
+        "app/__init__.py"
+      ],
+      [
+        "app/auth/__init__.py"
+      ],
+      [
+        "app/config.py"
+      ],
+      [
+        "app/auth/security.py"
+      ],
+      [
+        "app/auth/dependencies.py"
+      ],
+      [
+        "app/database.py"
+      ],
+      [
+        "app/orders/__init__.py"
+      ],
+      [
+        "app/orders/models.py",
+        "app/users/models.py"
+      ],
+      [
+        "app/orders/schemas.py"
+      ],
+      [
+        "app/users/__init__.py"
+      ],
+      [
+        "app/users/schemas.py"
+      ],
+      [
+        "app/users/service.py"
+      ],
+      [
+        "app/orders/service.py"
+      ],
+      [
+        "app/orders/router.py"
+      ],
+      [
+        "app/users/router.py"
+      ],
+      [
+        "app/main.py"
+      ],
+      [
+        "tests/conftest.py"
+      ],
+      [
+        "tests/test_orders.py"
+      ]
+    ],
+    "nodes": [
+      "app/__init__.py",
+      "app/auth/__init__.py",
+      "app/auth/dependencies.py",
+      "app/auth/security.py",
+      "app/config.py",
+      "app/database.py",
+      "app/main.py",
+      "app/orders/__init__.py",
+      "app/orders/models.py",
+      "app/orders/router.py",
+      "app/orders/schemas.py",
+      "app/orders/service.py",
+      "app/users/__init__.py",
+      "app/users/models.py",
+      "app/users/router.py",
+      "app/users/schemas.py",
+      "app/users/service.py",
+      "tests/conftest.py",
+      "tests/test_orders.py"
+    ]
+  },
+  "imports": [
+    {
+      "external_package": "dataclasses",
+      "file": "app/auth/dependencies.py",
+      "line": 1,
+      "module": "dataclasses",
+      "names": [
+        "dataclass"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "jwt",
+      "file": "app/auth/dependencies.py",
+      "line": 3,
+      "module": "jwt",
+      "names": [],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "fastapi",
+      "file": "app/auth/dependencies.py",
+      "line": 4,
+      "module": "fastapi",
+      "names": [
+        "Header",
+        "HTTPException"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/auth/dependencies.py",
+      "line": 6,
+      "module": "app.auth.security",
+      "names": [
+        "decode_token"
+      ],
+      "targets": [
+        "app/auth/security.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "hashlib",
+      "file": "app/auth/security.py",
+      "line": 1,
+      "module": "hashlib",
+      "names": [],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "datetime",
+      "file": "app/auth/security.py",
+      "line": 2,
+      "module": "datetime",
+      "names": [
+        "UTC",
+        "datetime",
+        "timedelta"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "jwt",
+      "file": "app/auth/security.py",
+      "line": 4,
+      "module": "jwt",
+      "names": [],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/auth/security.py",
+      "line": 6,
+      "module": "app.config",
+      "names": [
+        "JWT_EXPIRES_IN",
+        "JWT_SECRET"
+      ],
+      "targets": [
+        "app/config.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "os",
+      "file": "app/config.py",
+      "line": 1,
+      "module": "os",
+      "names": [],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "collections",
+      "file": "app/database.py",
+      "line": 1,
+      "module": "collections.abc",
+      "names": [
+        "Iterator"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/database.py",
+      "line": 3,
+      "module": "sqlalchemy",
+      "names": [
+        "create_engine"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/database.py",
+      "line": 4,
+      "module": "sqlalchemy.orm",
+      "names": [
+        "DeclarativeBase",
+        "Session",
+        "sessionmaker"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/database.py",
+      "line": 6,
+      "module": "app.config",
+      "names": [
+        "DATABASE_URL"
+      ],
+      "targets": [
+        "app/config.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "uvicorn",
+      "file": "app/main.py",
+      "line": 1,
+      "module": "uvicorn",
+      "names": [],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "fastapi",
+      "file": "app/main.py",
+      "line": 2,
+      "module": "fastapi",
+      "names": [
+        "FastAPI"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/main.py",
+      "line": 4,
+      "module": "app.config",
+      "names": [
+        "PORT"
+      ],
+      "targets": [
+        "app/config.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/main.py",
+      "line": 5,
+      "module": "app.database",
+      "names": [
+        "Base",
+        "engine"
+      ],
+      "targets": [
+        "app/database.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/main.py",
+      "line": 6,
+      "module": "app.orders.router",
+      "names": [
+        "router"
+      ],
+      "targets": [
+        "app/orders/router.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/main.py",
+      "line": 7,
+      "module": "app.users.router",
+      "names": [
+        "router"
+      ],
+      "targets": [
+        "app/users/router.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "enum",
+      "file": "app/orders/models.py",
+      "line": 3,
+      "module": "enum",
+      "names": [],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "datetime",
+      "file": "app/orders/models.py",
+      "line": 4,
+      "module": "datetime",
+      "names": [
+        "datetime"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "decimal",
+      "file": "app/orders/models.py",
+      "line": 5,
+      "module": "decimal",
+      "names": [
+        "Decimal"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "typing",
+      "file": "app/orders/models.py",
+      "line": 6,
+      "module": "typing",
+      "names": [
+        "TYPE_CHECKING"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/orders/models.py",
+      "line": 8,
+      "module": "sqlalchemy",
+      "names": [
+        "ForeignKey",
+        "Numeric",
+        "String",
+        "Text",
+        "func"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/orders/models.py",
+      "line": 9,
+      "module": "sqlalchemy.orm",
+      "names": [
+        "Mapped",
+        "mapped_column",
+        "relationship"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/orders/models.py",
+      "line": 11,
+      "module": "app.database",
+      "names": [
+        "Base"
+      ],
+      "targets": [
+        "app/database.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/orders/models.py",
+      "line": 14,
+      "module": "app.users.models",
+      "names": [
+        "User"
+      ],
+      "targets": [
+        "app/users/models.py"
+      ],
+      "type_only": true
+    },
+    {
+      "external_package": "fastapi",
+      "file": "app/orders/router.py",
+      "line": 1,
+      "module": "fastapi",
+      "names": [
+        "APIRouter",
+        "Depends"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/orders/router.py",
+      "line": 2,
+      "module": "sqlalchemy.orm",
+      "names": [
+        "Session"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/orders/router.py",
+      "line": 4,
+      "module": "app.auth.dependencies",
+      "names": [
+        "CurrentUser",
+        "get_current_user"
+      ],
+      "targets": [
+        "app/auth/dependencies.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/orders/router.py",
+      "line": 5,
+      "module": "app.database",
+      "names": [
+        "get_db"
+      ],
+      "targets": [
+        "app/database.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/orders/router.py",
+      "line": 6,
+      "module": "app.orders",
+      "names": [
+        "service"
+      ],
+      "targets": [
+        "app/orders/service.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/orders/router.py",
+      "line": 7,
+      "module": "app.orders.schemas",
+      "names": [
+        "CreateOrder",
+        "OrderOut"
+      ],
+      "targets": [
+        "app/orders/schemas.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "datetime",
+      "file": "app/orders/schemas.py",
+      "line": 1,
+      "module": "datetime",
+      "names": [
+        "datetime"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "decimal",
+      "file": "app/orders/schemas.py",
+      "line": 2,
+      "module": "decimal",
+      "names": [
+        "Decimal"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "pydantic",
+      "file": "app/orders/schemas.py",
+      "line": 4,
+      "module": "pydantic",
+      "names": [
+        "BaseModel",
+        "Field"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "fastapi",
+      "file": "app/orders/service.py",
+      "line": 1,
+      "module": "fastapi",
+      "names": [
+        "HTTPException"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/orders/service.py",
+      "line": 2,
+      "module": "sqlalchemy",
+      "names": [
+        "select"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/orders/service.py",
+      "line": 3,
+      "module": "sqlalchemy.orm",
+      "names": [
+        "Session"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/orders/service.py",
+      "line": 5,
+      "module": "app.orders.models",
+      "names": [
+        "Order",
+        "OrderStatus"
+      ],
+      "targets": [
+        "app/orders/models.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/orders/service.py",
+      "line": 6,
+      "module": "app.orders.schemas",
+      "names": [
+        "CreateOrder"
+      ],
+      "targets": [
+        "app/orders/schemas.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/orders/service.py",
+      "line": 7,
+      "module": "app.users.service",
+      "names": [
+        "get_user"
+      ],
+      "targets": [
+        "app/users/service.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "datetime",
+      "file": "app/users/models.py",
+      "line": 3,
+      "module": "datetime",
+      "names": [
+        "datetime"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "typing",
+      "file": "app/users/models.py",
+      "line": 4,
+      "module": "typing",
+      "names": [
+        "TYPE_CHECKING"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/users/models.py",
+      "line": 6,
+      "module": "sqlalchemy",
+      "names": [
+        "String",
+        "func"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/users/models.py",
+      "line": 7,
+      "module": "sqlalchemy.orm",
+      "names": [
+        "Mapped",
+        "mapped_column",
+        "relationship"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/users/models.py",
+      "line": 9,
+      "module": "app.database",
+      "names": [
+        "Base"
+      ],
+      "targets": [
+        "app/database.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/users/models.py",
+      "line": 12,
+      "module": "app.orders.models",
+      "names": [
+        "Order"
+      ],
+      "targets": [
+        "app/orders/models.py"
+      ],
+      "type_only": true
+    },
+    {
+      "external_package": "fastapi",
+      "file": "app/users/router.py",
+      "line": 1,
+      "module": "fastapi",
+      "names": [
+        "APIRouter",
+        "Depends"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/users/router.py",
+      "line": 2,
+      "module": "sqlalchemy.orm",
+      "names": [
+        "Session"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/users/router.py",
+      "line": 4,
+      "module": "app.auth.dependencies",
+      "names": [
+        "CurrentUser",
+        "get_current_user"
+      ],
+      "targets": [
+        "app/auth/dependencies.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/users/router.py",
+      "line": 5,
+      "module": "app.database",
+      "names": [
+        "get_db"
+      ],
+      "targets": [
+        "app/database.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/users/router.py",
+      "line": 6,
+      "module": "app.users",
+      "names": [
+        "service"
+      ],
+      "targets": [
+        "app/users/service.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/users/router.py",
+      "line": 7,
+      "module": "app.users.schemas",
+      "names": [
+        "CreateUser",
+        "UserOut"
+      ],
+      "targets": [
+        "app/users/schemas.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "datetime",
+      "file": "app/users/schemas.py",
+      "line": 1,
+      "module": "datetime",
+      "names": [
+        "datetime"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "pydantic",
+      "file": "app/users/schemas.py",
+      "line": 3,
+      "module": "pydantic",
+      "names": [
+        "BaseModel",
+        "EmailStr",
+        "Field"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "fastapi",
+      "file": "app/users/service.py",
+      "line": 1,
+      "module": "fastapi",
+      "names": [
+        "HTTPException"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/users/service.py",
+      "line": 2,
+      "module": "sqlalchemy",
+      "names": [
+        "select"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "sqlalchemy",
+      "file": "app/users/service.py",
+      "line": 3,
+      "module": "sqlalchemy.orm",
+      "names": [
+        "Session"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/users/service.py",
+      "line": 5,
+      "module": "app.auth.security",
+      "names": [
+        "hash_password"
+      ],
+      "targets": [
+        "app/auth/security.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/users/service.py",
+      "line": 6,
+      "module": "app.users.models",
+      "names": [
+        "User"
+      ],
+      "targets": [
+        "app/users/models.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "app/users/service.py",
+      "line": 7,
+      "module": "app.users.schemas",
+      "names": [
+        "CreateUser"
+      ],
+      "targets": [
+        "app/users/schemas.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": "os",
+      "file": "tests/conftest.py",
+      "line": 1,
+      "module": "os",
+      "names": [],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "decimal",
+      "file": "tests/test_orders.py",
+      "line": 1,
+      "module": "decimal",
+      "names": [
+        "Decimal"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "unittest",
+      "file": "tests/test_orders.py",
+      "line": 2,
+      "module": "unittest.mock",
+      "names": [
+        "MagicMock"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "pytest",
+      "file": "tests/test_orders.py",
+      "line": 4,
+      "module": "pytest",
+      "names": [],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": "fastapi",
+      "file": "tests/test_orders.py",
+      "line": 5,
+      "module": "fastapi",
+      "names": [
+        "HTTPException"
+      ],
+      "targets": [],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "tests/test_orders.py",
+      "line": 7,
+      "module": "app.orders",
+      "names": [
+        "service"
+      ],
+      "targets": [
+        "app/orders/service.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "tests/test_orders.py",
+      "line": 8,
+      "module": "app.orders.models",
+      "names": [
+        "Order",
+        "OrderStatus"
+      ],
+      "targets": [
+        "app/orders/models.py"
+      ],
+      "type_only": false
+    },
+    {
+      "external_package": null,
+      "file": "tests/test_orders.py",
+      "line": 9,
+      "module": "app.orders.schemas",
+      "names": [
+        "CreateOrder"
+      ],
+      "targets": [
+        "app/orders/schemas.py"
+      ],
+      "type_only": false
+    }
+  ],
+  "inventory": {
+    "config_files": [
+      ".env.example",
+      "pyproject.toml"
+    ],
+    "env_vars": {
+      "DATABASE_URL": [
+        ".env.example",
+        "app/config.py"
+      ],
+      "JWT_EXPIRES_IN": [
+        ".env.example",
+        "app/config.py"
+      ],
+      "JWT_SECRET": [
+        ".env.example",
+        "app/config.py"
+      ],
+      "PORT": [
+        ".env.example",
+        "app/config.py"
+      ]
+    },
+    "languages": [
+      {
+        "entry_points": [
+          "app/main.py"
+        ],
+        "external_packages": [
+          "fastapi",
+          "jwt",
+          "pydantic",
+          "pytest",
+          "sqlalchemy",
+          "uvicorn"
+        ],
+        "language": "python",
+        "manifests": [
+          {
+            "dependencies": {
+              "fastapi": ">=0.111",
+              "pydantic": ">=2.7",
+              "pyjwt": ">=2.8",
+              "sqlalchemy": ">=2.0",
+              "uvicorn": ">=0.30"
+            },
+            "dev_dependencies": {
+              "httpx": ">=0.27",
+              "pytest": ">=8.2",
+              "ruff": ">=0.5"
+            },
+            "file": "pyproject.toml",
+            "package_manager": "pip",
+            "scripts": {}
+          }
+        ],
+        "source_files": [
+          "app/__init__.py",
+          "app/auth/__init__.py",
+          "app/auth/dependencies.py",
+          "app/auth/security.py",
+          "app/config.py",
+          "app/database.py",
+          "app/main.py",
+          "app/orders/__init__.py",
+          "app/orders/models.py",
+          "app/orders/router.py",
+          "app/orders/schemas.py",
+          "app/orders/service.py",
+          "app/users/__init__.py",
+          "app/users/models.py",
+          "app/users/router.py",
+          "app/users/schemas.py",
+          "app/users/service.py"
+        ],
+        "test_files": [
+          "tests/conftest.py",
+          "tests/test_orders.py"
+        ],
+        "tools": {
+          "build": [
+            "hatch"
+          ],
+          "format": [
+            "ruff"
+          ],
+          "lint": [
+            "ruff"
+          ],
+          "test": [
+            "pytest"
+          ]
+        }
+      }
+    ],
+    "repo_name": "py-fastapi-shop",
+    "total_files": 21
+  },
+  "symbols": [
+    {
+      "decorators": [
+        "dataclass"
+      ],
+      "end_line": 12,
+      "exported": true,
+      "file": "app/auth/dependencies.py",
+      "kind": "class",
+      "name": "CurrentUser",
+      "parent": null,
+      "start_line": 10
+    },
+    {
+      "decorators": [],
+      "end_line": 11,
+      "exported": true,
+      "file": "app/auth/dependencies.py",
+      "kind": "field",
+      "name": "id",
+      "parent": "CurrentUser",
+      "start_line": 11
+    },
+    {
+      "decorators": [],
+      "end_line": 12,
+      "exported": true,
+      "file": "app/auth/dependencies.py",
+      "kind": "field",
+      "name": "role",
+      "parent": "CurrentUser",
+      "start_line": 12
+    },
+    {
+      "decorators": [],
+      "end_line": 22,
+      "exported": true,
+      "file": "app/auth/dependencies.py",
+      "kind": "function",
+      "name": "get_current_user",
+      "parent": null,
+      "start_line": 15
+    },
+    {
+      "decorators": [],
+      "end_line": 10,
+      "exported": true,
+      "file": "app/auth/security.py",
+      "kind": "function",
+      "name": "hash_password",
+      "parent": null,
+      "start_line": 9
+    },
+    {
+      "decorators": [],
+      "end_line": 15,
+      "exported": true,
+      "file": "app/auth/security.py",
+      "kind": "function",
+      "name": "issue_token",
+      "parent": null,
+      "start_line": 13
+    },
+    {
+      "decorators": [],
+      "end_line": 19,
+      "exported": true,
+      "file": "app/auth/security.py",
+      "kind": "function",
+      "name": "decode_token",
+      "parent": null,
+      "start_line": 18
+    },
+    {
+      "decorators": [],
+      "end_line": 3,
+      "exported": true,
+      "file": "app/config.py",
+      "kind": "variable",
+      "name": "PORT",
+      "parent": null,
+      "start_line": 3
+    },
+    {
+      "decorators": [],
+      "end_line": 4,
+      "exported": true,
+      "file": "app/config.py",
+      "kind": "variable",
+      "name": "DATABASE_URL",
+      "parent": null,
+      "start_line": 4
+    },
+    {
+      "decorators": [],
+      "end_line": 5,
+      "exported": true,
+      "file": "app/config.py",
+      "kind": "variable",
+      "name": "JWT_SECRET",
+      "parent": null,
+      "start_line": 5
+    },
+    {
+      "decorators": [],
+      "end_line": 6,
+      "exported": true,
+      "file": "app/config.py",
+      "kind": "variable",
+      "name": "JWT_EXPIRES_IN",
+      "parent": null,
+      "start_line": 6
+    },
+    {
+      "decorators": [],
+      "end_line": 8,
+      "exported": true,
+      "file": "app/database.py",
+      "kind": "variable",
+      "name": "engine",
+      "parent": null,
+      "start_line": 8
+    },
+    {
+      "decorators": [],
+      "end_line": 9,
+      "exported": true,
+      "file": "app/database.py",
+      "kind": "variable",
+      "name": "SessionLocal",
+      "parent": null,
+      "start_line": 9
+    },
+    {
+      "decorators": [],
+      "end_line": 13,
+      "exported": true,
+      "file": "app/database.py",
+      "kind": "class",
+      "name": "Base",
+      "parent": null,
+      "start_line": 12
+    },
+    {
+      "decorators": [],
+      "end_line": 18,
+      "exported": true,
+      "file": "app/database.py",
+      "kind": "function",
+      "name": "get_db",
+      "parent": null,
+      "start_line": 16
+    },
+    {
+      "decorators": [],
+      "end_line": 9,
+      "exported": true,
+      "file": "app/main.py",
+      "kind": "variable",
+      "name": "app",
+      "parent": null,
+      "start_line": 9
+    },
+    {
+      "decorators": [
+        "app.on_event"
+      ],
+      "end_line": 16,
+      "exported": true,
+      "file": "app/main.py",
+      "kind": "function",
+      "name": "create_tables",
+      "parent": null,
+      "start_line": 15
+    },
+    {
+      "decorators": [],
+      "end_line": 20,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "class",
+      "name": "OrderStatus",
+      "parent": null,
+      "start_line": 17
+    },
+    {
+      "decorators": [],
+      "end_line": 18,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "field",
+      "name": "PENDING",
+      "parent": "OrderStatus",
+      "start_line": 18
+    },
+    {
+      "decorators": [],
+      "end_line": 19,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "field",
+      "name": "PAID",
+      "parent": "OrderStatus",
+      "start_line": 19
+    },
+    {
+      "decorators": [],
+      "end_line": 20,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "field",
+      "name": "CANCELLED",
+      "parent": "OrderStatus",
+      "start_line": 20
+    },
+    {
+      "decorators": [],
+      "end_line": 33,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "class",
+      "name": "Order",
+      "parent": null,
+      "start_line": 23
+    },
+    {
+      "decorators": [],
+      "end_line": 24,
+      "exported": false,
+      "file": "app/orders/models.py",
+      "kind": "field",
+      "name": "__tablename__",
+      "parent": "Order",
+      "start_line": 24
+    },
+    {
+      "decorators": [],
+      "end_line": 26,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "field",
+      "name": "id",
+      "parent": "Order",
+      "start_line": 26
+    },
+    {
+      "decorators": [],
+      "end_line": 27,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "field",
+      "name": "user_id",
+      "parent": "Order",
+      "start_line": 27
+    },
+    {
+      "decorators": [],
+      "end_line": 28,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "field",
+      "name": "total",
+      "parent": "Order",
+      "start_line": 28
+    },
+    {
+      "decorators": [],
+      "end_line": 29,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "field",
+      "name": "status",
+      "parent": "Order",
+      "start_line": 29
+    },
+    {
+      "decorators": [],
+      "end_line": 30,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "field",
+      "name": "note",
+      "parent": "Order",
+      "start_line": 30
+    },
+    {
+      "decorators": [],
+      "end_line": 31,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "field",
+      "name": "created_at",
+      "parent": "Order",
+      "start_line": 31
+    },
+    {
+      "decorators": [],
+      "end_line": 33,
+      "exported": true,
+      "file": "app/orders/models.py",
+      "kind": "field",
+      "name": "user",
+      "parent": "Order",
+      "start_line": 33
+    },
+    {
+      "decorators": [],
+      "end_line": 9,
+      "exported": true,
+      "file": "app/orders/router.py",
+      "kind": "variable",
+      "name": "router",
+      "parent": null,
+      "start_line": 9
+    },
+    {
+      "decorators": [
+        "router.post"
+      ],
+      "end_line": 18,
+      "exported": true,
+      "file": "app/orders/router.py",
+      "kind": "function",
+      "name": "create",
+      "parent": null,
+      "start_line": 13
+    },
+    {
+      "decorators": [
+        "router.get"
+      ],
+      "end_line": 23,
+      "exported": true,
+      "file": "app/orders/router.py",
+      "kind": "function",
+      "name": "list_mine",
+      "parent": null,
+      "start_line": 22
+    },
+    {
+      "decorators": [
+        "router.post"
+      ],
+      "end_line": 32,
+      "exported": true,
+      "file": "app/orders/router.py",
+      "kind": "function",
+      "name": "cancel",
+      "parent": null,
+      "start_line": 27
+    },
+    {
+      "decorators": [],
+      "end_line": 9,
+      "exported": true,
+      "file": "app/orders/schemas.py",
+      "kind": "class",
+      "name": "CreateOrder",
+      "parent": null,
+      "start_line": 7
+    },
+    {
+      "decorators": [],
+      "end_line": 8,
+      "exported": true,
+      "file": "app/orders/schemas.py",
+      "kind": "field",
+      "name": "total",
+      "parent": "CreateOrder",
+      "start_line": 8
+    },
+    {
+      "decorators": [],
+      "end_line": 9,
+      "exported": true,
+      "file": "app/orders/schemas.py",
+      "kind": "field",
+      "name": "note",
+      "parent": "CreateOrder",
+      "start_line": 9
+    },
+    {
+      "decorators": [],
+      "end_line": 17,
+      "exported": true,
+      "file": "app/orders/schemas.py",
+      "kind": "class",
+      "name": "OrderOut",
+      "parent": null,
+      "start_line": 12
+    },
+    {
+      "decorators": [],
+      "end_line": 13,
+      "exported": true,
+      "file": "app/orders/schemas.py",
+      "kind": "field",
+      "name": "id",
+      "parent": "OrderOut",
+      "start_line": 13
+    },
+    {
+      "decorators": [],
+      "end_line": 14,
+      "exported": true,
+      "file": "app/orders/schemas.py",
+      "kind": "field",
+      "name": "total",
+      "parent": "OrderOut",
+      "start_line": 14
+    },
+    {
+      "decorators": [],
+      "end_line": 15,
+      "exported": true,
+      "file": "app/orders/schemas.py",
+      "kind": "field",
+      "name": "status",
+      "parent": "OrderOut",
+      "start_line": 15
+    },
+    {
+      "decorators": [],
+      "end_line": 16,
+      "exported": true,
+      "file": "app/orders/schemas.py",
+      "kind": "field",
+      "name": "note",
+      "parent": "OrderOut",
+      "start_line": 16
+    },
+    {
+      "decorators": [],
+      "end_line": 17,
+      "exported": true,
+      "file": "app/orders/schemas.py",
+      "kind": "field",
+      "name": "created_at",
+      "parent": "OrderOut",
+      "start_line": 17
+    },
+    {
+      "decorators": [],
+      "end_line": 17,
+      "exported": true,
+      "file": "app/orders/service.py",
+      "kind": "function",
+      "name": "create_order",
+      "parent": null,
+      "start_line": 10
+    },
+    {
+      "decorators": [],
+      "end_line": 22,
+      "exported": true,
+      "file": "app/orders/service.py",
+      "kind": "function",
+      "name": "list_orders",
+      "parent": null,
+      "start_line": 20
+    },
+    {
+      "decorators": [],
+      "end_line": 33,
+      "exported": true,
+      "file": "app/orders/service.py",
+      "kind": "function",
+      "name": "cancel_order",
+      "parent": null,
+      "start_line": 25
+    },
+    {
+      "decorators": [],
+      "end_line": 24,
+      "exported": true,
+      "file": "app/users/models.py",
+      "kind": "class",
+      "name": "User",
+      "parent": null,
+      "start_line": 15
+    },
+    {
+      "decorators": [],
+      "end_line": 16,
+      "exported": false,
+      "file": "app/users/models.py",
+      "kind": "field",
+      "name": "__tablename__",
+      "parent": "User",
+      "start_line": 16
+    },
+    {
+      "decorators": [],
+      "end_line": 18,
+      "exported": true,
+      "file": "app/users/models.py",
+      "kind": "field",
+      "name": "id",
+      "parent": "User",
+      "start_line": 18
+    },
+    {
+      "decorators": [],
+      "end_line": 19,
+      "exported": true,
+      "file": "app/users/models.py",
+      "kind": "field",
+      "name": "email",
+      "parent": "User",
+      "start_line": 19
+    },
+    {
+      "decorators": [],
+      "end_line": 20,
+      "exported": true,
+      "file": "app/users/models.py",
+      "kind": "field",
+      "name": "password_hash",
+      "parent": "User",
+      "start_line": 20
+    },
+    {
+      "decorators": [],
+      "end_line": 21,
+      "exported": true,
+      "file": "app/users/models.py",
+      "kind": "field",
+      "name": "role",
+      "parent": "User",
+      "start_line": 21
+    },
+    {
+      "decorators": [],
+      "end_line": 22,
+      "exported": true,
+      "file": "app/users/models.py",
+      "kind": "field",
+      "name": "created_at",
+      "parent": "User",
+      "start_line": 22
+    },
+    {
+      "decorators": [],
+      "end_line": 24,
+      "exported": true,
+      "file": "app/users/models.py",
+      "kind": "field",
+      "name": "orders",
+      "parent": "User",
+      "start_line": 24
+    },
+    {
+      "decorators": [],
+      "end_line": 9,
+      "exported": true,
+      "file": "app/users/router.py",
+      "kind": "variable",
+      "name": "router",
+      "parent": null,
+      "start_line": 9
+    },
+    {
+      "decorators": [
+        "router.post"
+      ],
+      "end_line": 14,
+      "exported": true,
+      "file": "app/users/router.py",
+      "kind": "function",
+      "name": "register",
+      "parent": null,
+      "start_line": 13
+    },
+    {
+      "decorators": [
+        "router.get"
+      ],
+      "end_line": 23,
+      "exported": true,
+      "file": "app/users/router.py",
+      "kind": "function",
+      "name": "find_one",
+      "parent": null,
+      "start_line": 18
+    },
+    {
+      "decorators": [],
+      "end_line": 8,
+      "exported": true,
+      "file": "app/users/schemas.py",
+      "kind": "class",
+      "name": "CreateUser",
+      "parent": null,
+      "start_line": 6
+    },
+    {
+      "decorators": [],
+      "end_line": 7,
+      "exported": true,
+      "file": "app/users/schemas.py",
+      "kind": "field",
+      "name": "email",
+      "parent": "CreateUser",
+      "start_line": 7
+    },
+    {
+      "decorators": [],
+      "end_line": 8,
+      "exported": true,
+      "file": "app/users/schemas.py",
+      "kind": "field",
+      "name": "password",
+      "parent": "CreateUser",
+      "start_line": 8
+    },
+    {
+      "decorators": [],
+      "end_line": 15,
+      "exported": true,
+      "file": "app/users/schemas.py",
+      "kind": "class",
+      "name": "UserOut",
+      "parent": null,
+      "start_line": 11
+    },
+    {
+      "decorators": [],
+      "end_line": 12,
+      "exported": true,
+      "file": "app/users/schemas.py",
+      "kind": "field",
+      "name": "id",
+      "parent": "UserOut",
+      "start_line": 12
+    },
+    {
+      "decorators": [],
+      "end_line": 13,
+      "exported": true,
+      "file": "app/users/schemas.py",
+      "kind": "field",
+      "name": "email",
+      "parent": "UserOut",
+      "start_line": 13
+    },
+    {
+      "decorators": [],
+      "end_line": 14,
+      "exported": true,
+      "file": "app/users/schemas.py",
+      "kind": "field",
+      "name": "role",
+      "parent": "UserOut",
+      "start_line": 14
+    },
+    {
+      "decorators": [],
+      "end_line": 15,
+      "exported": true,
+      "file": "app/users/schemas.py",
+      "kind": "field",
+      "name": "created_at",
+      "parent": "UserOut",
+      "start_line": 15
+    },
+    {
+      "decorators": [],
+      "end_line": 17,
+      "exported": true,
+      "file": "app/users/service.py",
+      "kind": "function",
+      "name": "create_user",
+      "parent": null,
+      "start_line": 10
+    },
+    {
+      "decorators": [],
+      "end_line": 24,
+      "exported": true,
+      "file": "app/users/service.py",
+      "kind": "function",
+      "name": "get_user",
+      "parent": null,
+      "start_line": 20
+    },
+    {
+      "decorators": [],
+      "end_line": 15,
+      "exported": true,
+      "file": "tests/test_orders.py",
+      "kind": "function",
+      "name": "test_rejects_zero_total",
+      "parent": null,
+      "start_line": 12
+    },
+    {
+      "decorators": [],
+      "end_line": 23,
+      "exported": true,
+      "file": "tests/test_orders.py",
+      "kind": "function",
+      "name": "test_does_not_cancel_paid_orders",
+      "parent": null,
+      "start_line": 18
+    }
+  ],
+  "warnings": []
+}
