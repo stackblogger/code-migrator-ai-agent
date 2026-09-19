@@ -94,7 +94,15 @@ def test_typeorm_columns(make_repo):
     result = extract(make_repo, TypeOrmAdapter(), ENTITIES)
     columns = by_key(result, ConceptKind.COLUMN)
     assert columns["authors.id"]["primary_key"] is True
-    assert columns["authors.full_name"] == {"nullable": False, "unique": True, "primary_key": False}
+    full_name = columns["authors.full_name"]
+    assert (full_name["nullable"], full_name["unique"], full_name["primary_key"]) == (
+        False,
+        True,
+        False,
+    )
+    assert full_name["type"] == "varchar(255)"
+    assert columns["authors.id"]["type"] == "uuid"
+    assert columns["authors.bio"]["type"] == "text"
     assert columns["authors.bio"]["nullable"] is True
     assert "authors.books" not in columns  # OneToMany has no column
     assert columns["Book.authorId"]["references"] == "authors"

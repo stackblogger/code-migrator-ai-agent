@@ -98,6 +98,25 @@ Framework adapters live in `adapters/frameworks/` and follow `base.py`: `package
 detection) and `extract(files)` which returns nodes and notes. Adding a framework means one
 new file and one line in `adapters/frameworks/__init__.py`.
 
+## Flow of `migrator plan` and `migrator skeleton`
+
+```text
+analyze + concepts → units = SCC groups in dependency order (from M1 graph)
+                   → role per file (api, model, schema, guard, service, wiring, config, entrypoint, test)
+                   → target file by convention layout (planning/layout.py)
+                   → [--llm] OpenAI proposes idiomatic layout + risks → validated → or fallback
+                   → MigrationPlan (order is checked: every unit after its dependencies)
+
+skeleton: concepts + plan → FastAPI renderer (skeleton/fastapi/):
+          models (exact column names/types/defaults), Pydantic schemas (same validation),
+          routes (same method/path/status, auth dependency fails closed, handlers answer 501),
+          config, main.py, pyproject (deps from mappings/*.toml), smoke test
+          → [--check] sandbox install/build/test → boot with Postgres → probe every route
+```
+
+The skeleton is made by code, not by the LLM, because it is pure structure and must be exact.
+The LLM only chooses the layout (and lists risks). Logic comes in M6.
+
 ## Logging
 
 Every module uses `logging.getLogger(__name__)`; setup is in `log.py`. Logs go to stderr.
@@ -149,5 +168,8 @@ See `adapters/languages/base.py`. Every adapter gives:
   NestJS dynamic modules, TypeORM naming strategies and SQLAlchemy imperative mapping are not read yet.
   Unsupported patterns are reported as notes. The schema check against the real database catches
   column mistakes.
+- Only one target is supported for now: `python-fastapi`. Relationships between models and
+  response models are not generated yet (M6). Enum defaults like `OrderStatus.Pending` are
+  reported as notes and must be set by hand or in M6.
 - The ledger compares static facts only. Whether mapped items really behave the same is checked
   by differential testing in M7.

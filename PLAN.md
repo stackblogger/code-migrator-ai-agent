@@ -451,7 +451,7 @@ Long-running work runs in background workers, never inside a request.
 | **M2** | Sandbox + toolchains: install, build, and test the **source** fixtures in Docker with limits and network phases | Source fixture tests pass in sandbox; sandbox escape/limit tests pass |
 | **M3** | Behavior baseline: run source app + its services (DB) in sandbox, harness, determinism controls, DB diffing, trace capture, self-consistency check, hold-out split, mutation score | Source-vs-source replay is 100% stable (with approved rules); mutation score reported |
 | **M4** | CCM + NestJS/TypeORM/FastAPI/SQLAlchemy framework adapters + ledger + surface extraction + static-vs-real schema check | Ledger for fixture is complete; API/schema surface extracted on both stacks |
-| **M5** | LLM layer + planner + interface-first skeleton | Skeleton for fixture compiles and boots; plan respects SCC order |
+| **M5** | OpenAI LLM layer + planner (LLM layout + risks, validated) + deterministic interface-first skeleton + boot check | Skeleton for fixture compiles and boots; plan respects SCC order |
 | **M6** | Unit migration loop + sealed tests + fix loop + git per unit | ≥ 80% of fixture units reach unit-test green; attempts/blocked tracked |
 | **M7** | Differential validation + gates G0–G6 + report + **evaluation harness** | First full NestJS→FastAPI fixture run with a truthful report; eval runs N× and reports variance |
 | **M8** | Hardening: hazards, property/fuzz, authz matrix, anti-cheat, adversarial reviewer, line coverage of source under the harness, record/replay proxy for external services, G7–G10 | Seeded bugs injected into target are caught by gates (≥ 95% of the seeded bug set) |

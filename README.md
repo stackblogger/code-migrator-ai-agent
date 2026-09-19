@@ -8,7 +8,7 @@ Full design is in [PLAN.md](PLAN.md). Current status is in [docs/milestones.md](
 
 ## Status
 
-**Milestones 1 to 4 are done.**
+**Milestones 1 to 5 are done.**
 
 **M1: repository analyzer.** It reads a repo and tells you:
 
@@ -32,7 +32,14 @@ the code and list routes (status, auth), request fields (validation rules), tabl
 errors and env vars in a language-neutral way. The **ledger** then checks that every source item
 exists in the target, or is waived by a person with a reason. See [docs/ledger.md](docs/ledger.md).
 
-Supported languages as of now: **TypeScript** and **Python**. No LLM is used yet.
+**M5: plan and skeleton.** `migrator plan` orders the work into units (dependencies first) and
+picks a target file for every source file. With `--llm`, OpenAI picks an idiomatic layout and lists
+behaviour risks per unit, and our code checks its answer. `migrator skeleton` then writes a
+Python + FastAPI project with the same routes, status codes, auth rules, tables, columns and
+validation as the source. Handlers answer 501 until the logic is migrated (M6).
+`--check` builds and boots it in the sandbox. See [docs/llm.md](docs/llm.md).
+
+Supported: **TypeScript → Python** for now (source adapters exist for both languages).
 
 ## Quick start (local)
 
@@ -92,6 +99,18 @@ Build the ledger (source → target). Exit code is 0 only when it is complete:
 uv run migrator ledger fixtures/ts-nestjs-shop --target fixtures/py-fastapi-shop --waivers fixtures/ledger/ts-to-py.waivers.json
 ```
 
+Plan the migration (add `--llm` to let OpenAI choose the layout and list risks):
+
+```bash
+uv run migrator plan fixtures/ts-nestjs-shop --llm
+```
+
+Generate the target skeleton, then build and boot it in the sandbox:
+
+```bash
+uv run migrator skeleton fixtures/ts-nestjs-shop --out out/shop-python --check
+```
+
 ## Logs
 
 Logs go to stderr, summaries go to stdout. Use `-v` for debug logs, `-q` for warnings only:
@@ -146,6 +165,11 @@ src/migrator/
   adapters/frameworks/  NestJS, TypeORM, FastAPI, SQLAlchemy -> concepts
   concepts/        concept model, canonical keys, schema check against real DB
   ledger/          source -> target matching, waivers
+  llm/             OpenAI provider, prompts, redaction, cache, usage log
+  planning/        units, roles, target layout, LLM mapping
+  skeleton/        target project generator (fastapi/) and boot check
+  mappings/        dependency mapping (TOML)
+  config.py        settings from .env
   log.py           logging setup
   cli.py           `migrator` command
 fixtures/          small sample repos + shared scenarios used in tests
@@ -155,5 +179,5 @@ docs/              architecture, scenarios, ledger, milestone notes
 
 ## Configuration
 
-Copy `.env.example` to `.env`. The OpenAI key (`OPENAI_API_KEY`) is needed only from
-milestone M5 onwards, when the LLM starts writing code.
+Copy `.env.example` to `.env`. The OpenAI key (`OPENAI_API_KEY`) is needed only for commands
+run with `--llm`. Everything else works without it.

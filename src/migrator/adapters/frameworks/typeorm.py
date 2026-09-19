@@ -14,6 +14,38 @@ COLUMNS = PRIMARY | {
     "DeleteDateColumn",
     "VersionColumn",
 }
+# TypeScript property type -> canonical column type (TypeORM defaults)
+TS_TYPES = {
+    "string": "varchar(255)",
+    "number": "integer",
+    "boolean": "boolean",
+    "Date": "timestamp",
+}
+# TypeORM `type` option -> canonical column type
+DB_TYPES = {
+    "int": "integer",
+    "integer": "integer",
+    "int4": "integer",
+    "bigint": "bigint",
+    "int8": "bigint",
+    "float": "float",
+    "double precision": "float",
+    "real": "float",
+    "decimal": "numeric",
+    "numeric": "numeric",
+    "varchar": "varchar",
+    "character varying": "varchar",
+    "text": "text",
+    "boolean": "boolean",
+    "bool": "boolean",
+    "timestamp": "timestamp",
+    "timestamptz": "timestamp",
+    "date": "date",
+    "uuid": "uuid",
+    "json": "json",
+    "jsonb": "json",
+}
+DATE_COLUMNS = {"CreateDateColumn", "UpdateDateColumn", "DeleteDateColumn"}
 # Relations that own a foreign key column. OneToOne owns it only with @JoinColumn.
 JOIN_RELATIONS = {"ManyToOne"}
 
@@ -63,7 +95,13 @@ class TypeOrmAdapter(FrameworkAdapter):
                 "nullable": nullable,
                 "unique": bool(options.get("unique", False)),
                 "primary_key": primary,
+                "type": _column_type(column_deco, options, member, file.source, result),
+                "default": _default(column_deco, options),
             }
+            if "default" in options and options["default"] is None:
+                result.notes.append(
+                    f"typeorm: default of {table}.{column} is not a plain value, set it by hand"
+                )
         elif names & JOIN_RELATIONS:
             relation = next(d for d in member.decorators if d.name in JOIN_RELATIONS)
             options = _options(relation, file.source)
@@ -76,6 +114,8 @@ class TypeOrmAdapter(FrameworkAdapter):
                 "unique": False,
                 "primary_key": False,
                 "references": tables.get(target, target),
+                "type": "integer",
+                "default": None,
             }
         else:
             return  # OneToMany etc. have no column in this table
@@ -93,6 +133,40 @@ def _options(deco: Decorator | None, source: bytes) -> dict:
         if isinstance(value, dict):
             return value
     return {}
+
+
+def _column_type(deco: Decorator, options: dict, member, source: bytes, result: Extraction) -> str:
+    if deco.name == "PrimaryGeneratedColumn":
+        first = literal(deco.args[0], source) if deco.args else None
+        return "uuid" if first == "uuid" else "integer"
+    if deco.name in DATE_COLUMNS:
+        return "timestamp"
+    first = literal(deco.args[0], source) if deco.args else None
+    declared = options.get("type") or (first if isinstance(first, str) else None)
+    if declared:
+        base = DB_TYPES.get(str(declared).lower(), str(declared).lower())
+        if base == "numeric" and "precision" in options:
+            return f"numeric({options['precision']},{options.get('scale', 0)})"
+        if base == "varchar":
+            return f"varchar({options.get('length', 255)})"
+        return base
+    ts_type = (
+        text(member.node.child_by_field_name("type"), source).lstrip(":").strip()
+        if member.node.child_by_field_name("type")
+        else ""
+    )
+    ts_type = ts_type.split("|")[0].strip()
+    if ts_type in TS_TYPES:
+        return TS_TYPES[ts_type]
+    result.notes.append(f"typeorm: unknown column type '{ts_type}' for {member.name}")
+    return ts_type or "unknown"
+
+
+def _default(deco: Decorator, options: dict):
+    """Literal default value, "now" for date columns, or None (also when not a plain literal)."""
+    if deco.name in ("CreateDateColumn", "UpdateDateColumn"):
+        return "now"
+    return options.get("default")
 
 
 def _relation_target(deco: Decorator, source: bytes) -> str | None:

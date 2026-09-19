@@ -18,6 +18,7 @@ class ConceptKind(StrEnum):
     ERROR = "error"  # HTTP error the code raises on purpose
     ENV_VAR = "env_var"  # config value read from the environment
     PROVIDER = "provider"  # injectable service/class (info only, not in the ledger)
+    MODULE = "module"  # wiring of the app, e.g. NestJS @Module (info only, not in the ledger)
 
 
 class ConceptNode(BaseModel):

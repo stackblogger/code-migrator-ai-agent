@@ -36,7 +36,8 @@ def test_typescript_surface():
         "POST /users": (201, False),
     }
     assert s["tables"] == ["orders", "users"] and s["columns"] == 11
-    assert s["notes"] == []
+    # Enum default (OrderStatus.Pending) is not a plain value, so it is reported, not guessed.
+    assert s["notes"] == ["typeorm: default of orders.status is not a plain value, set it by hand"]
 
 
 def test_python_surface():

@@ -67,9 +67,20 @@ class NestJsAdapter(FrameworkAdapter):
                 names = {d.name for d in cls.decorators}
                 if "Controller" in names:
                     self._routes(file, cls, all_classes, result)
+                if "Module" in names:
+                    result.nodes.append(
+                        self.node(ConceptKind.MODULE, cls.name, cls.name, file, cls.node)
+                    )
                 if "Injectable" in names:
                     result.nodes.append(
-                        self.node(ConceptKind.PROVIDER, cls.name, cls.name, file, cls.node)
+                        self.node(
+                            ConceptKind.PROVIDER,
+                            cls.name,
+                            cls.name,
+                            file,
+                            cls.node,
+                            guard=_is_guard(cls, file.source),
+                        )
                     )
             self._errors(file, result)
         return result
@@ -172,6 +183,12 @@ class NestJsAdapter(FrameworkAdapter):
                         status=status,
                     )
                 )
+
+
+def _is_guard(cls: ClassInfo, source: bytes) -> bool:
+    """`class X implements CanActivate` is a guard (an auth or permission check)."""
+    header = text(cls.node, source).split("{", 1)[0]
+    return "CanActivate" in header
 
 
 def _find(decorators: list[Decorator], name: str) -> Decorator | None:

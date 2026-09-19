@@ -14,10 +14,15 @@ from migrator.concepts.schema_check import check_against_runtime
 from migrator.concepts.summary import format_concepts
 from migrator.ledger import build_ledger, load_waivers
 from migrator.ledger.summary import format_ledger
+from migrator.llm import default_client
 from migrator.log import setup_logging
+from migrator.planning.planner import build_plan
+from migrator.planning.summary import format_plan
 from migrator.repository import LocalRepository
 from migrator.sandbox import DockerSandbox, RunStatus, verify_repo
 from migrator.sandbox.summary import format_runs
+from migrator.skeleton.check import check_skeleton
+from migrator.skeleton.generate import generate_skeleton, write_skeleton
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -25,7 +30,7 @@ def main(argv: list[str] | None = None) -> int:
     setup_logging("DEBUG" if args.verbose else "WARNING" if args.quiet else None)
     try:
         return args.handler(args)
-    except (FileNotFoundError, KeyError, RuntimeError, ValueError) as error:
+    except (FileNotFoundError, FileExistsError, KeyError, RuntimeError, ValueError) as error:
         print(f"Error: {error}", file=sys.stderr)
         return 1
 
@@ -108,6 +113,43 @@ def _ledger(args: argparse.Namespace) -> int:
     return 0 if ledger.complete else 1
 
 
+def _plan(args: argparse.Namespace) -> int:
+    plan = build_plan(
+        LocalRepository(args.source), args.target, default_client() if args.llm else None
+    )
+    if args.out:
+        Path(args.out).write_text(plan.model_dump_json(indent=2) + "\n")
+        print(f"Plan written to {args.out}\n")
+    print(format_plan(plan))
+    return 0
+
+
+def _skeleton(args: argparse.Namespace) -> int:
+    repo = LocalRepository(args.source)
+    plan = build_plan(repo, args.target, default_client() if args.llm else None)
+    skeleton = generate_skeleton(repo, plan)
+    out = Path(args.out)
+    write_skeleton(skeleton, out, force=args.force)
+    print(
+        f"Skeleton with {len(skeleton.files)} files written to {out} (layout by {plan.mapped_by})"
+    )
+    for note in skeleton.notes:
+        print(f"  Note: {note}")
+    if not args.check:
+        return 0
+    result = check_skeleton(LocalRepository(out), build_concept_model(repo))
+    print(f"\nBoot check: {'PASSED' if result.ok else 'FAILED'}")
+    for key, status in result.routes.items():
+        print(f"  {key:<28} -> {status}")
+    for problem in result.problems:
+        print(f"  Problem: {problem}")
+    failed = next((s for s in result.build.steps if not s.ok), None) if result.build else None
+    if failed:
+        print(f"\n  Last lines of '{failed.name}' output:")
+        print("\n".join(f"    | {line}" for line in failed.output.rstrip().splitlines()[-25:]))
+    return 0 if result.ok else 1
+
+
 def _cleanup(args: argparse.Namespace) -> int:
     DockerSandbox().cleanup_stale()
     print("Removed leftover sandbox containers (if any).")
@@ -169,6 +211,30 @@ def _parser() -> argparse.ArgumentParser:
     ledger_cmd.add_argument("--waivers", help="Waivers JSON file (key, reason, approved_by)")
     ledger_cmd.add_argument("--out", help="Write the full ledger to this JSON file")
     ledger_cmd.set_defaults(handler=_ledger)
+
+    plan_cmd = sub.add_parser("plan", help="Order the migration units and pick target files")
+    plan_cmd.add_argument("source", help="Path to the source repository")
+    plan_cmd.add_argument("--target", default="python-fastapi", help="Target stack")
+    plan_cmd.add_argument(
+        "--llm", action="store_true", help="Let the LLM (OpenAI) choose the layout"
+    )
+    plan_cmd.add_argument("--out", help="Write the plan to this JSON file")
+    plan_cmd.set_defaults(handler=_plan)
+
+    skeleton_cmd = sub.add_parser(
+        "skeleton", help="Generate a target skeleton that builds and boots"
+    )
+    skeleton_cmd.add_argument("source", help="Path to the source repository")
+    skeleton_cmd.add_argument("--out", required=True, help="Folder for the new project")
+    skeleton_cmd.add_argument("--target", default="python-fastapi", help="Target stack")
+    skeleton_cmd.add_argument(
+        "--llm", action="store_true", help="Let the LLM (OpenAI) choose the layout"
+    )
+    skeleton_cmd.add_argument(
+        "--check", action="store_true", help="Build and boot it in the sandbox"
+    )
+    skeleton_cmd.add_argument("--force", action="store_true", help="Write into a non-empty folder")
+    skeleton_cmd.set_defaults(handler=_skeleton)
 
     cleanup_cmd = sub.add_parser("cleanup", help="Remove leftover sandbox containers")
     cleanup_cmd.set_defaults(handler=_cleanup)

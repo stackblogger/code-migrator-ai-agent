@@ -1,0 +1,38 @@
+# Deterministic dependency mapping, TypeScript/Node package -> Python requirement.
+# An empty string means "not needed in the target". Anything not listed here is reported
+# in the skeleton notes, so a person (or the LLM in M6) can decide.
+
+[dependencies]
+"@nestjs/core" = "fastapi>=0.111"
+"@nestjs/common" = "fastapi>=0.111"
+"@nestjs/platform-express" = "uvicorn[standard]>=0.30"
+"@nestjs/typeorm" = "sqlalchemy>=2.0"
+"@nestjs/jwt" = "pyjwt>=2.8"
+"@nestjs/config" = ""
+"typeorm" = "sqlalchemy>=2.0"
+"pg" = "psycopg[binary]>=3.2"
+"class-validator" = "pydantic[email]>=2.7"
+"class-transformer" = ""
+"reflect-metadata" = ""
+"rxjs" = ""
+"express" = "fastapi>=0.111"
+"jsonwebtoken" = "pyjwt>=2.8"
+"bcrypt" = "bcrypt>=4.1"
+"bcryptjs" = "bcrypt>=4.1"
+"axios" = "httpx>=0.27"
+"dotenv" = "python-dotenv>=1.0"
+"uuid" = ""
+"lodash" = ""
+
+[dev_dependencies]
+"jest" = "pytest>=8.2"
+"vitest" = "pytest>=8.2"
+"@nestjs/testing" = "httpx>=0.27"
+"supertest" = "httpx>=0.27"
+"eslint" = "ruff>=0.5"
+"ts-jest" = ""
+"typescript" = ""
+"@nestjs/cli" = ""
+"@nestjs/schematics" = ""
+"prettier" = ""
+"ts-node" = ""

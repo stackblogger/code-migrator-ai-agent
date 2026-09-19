@@ -14,6 +14,7 @@ from migrator.adapters.frameworks.py_syntax import (
     literal,
 )
 from migrator.adapters.languages.treesitter import text
+from migrator.concepts.constraints import NUMERIC_STRING_PATTERN
 from migrator.concepts.keys import display_path, error_key, input_key, route_key
 from migrator.concepts.models import ConceptKind
 
@@ -207,6 +208,8 @@ def _field_rules(
         for keyword, canonical in FIELD_LIMITS.items():
             if keyword in field.kwargs:
                 constraints.add(f"{canonical}={literal(field.kwargs[keyword], source)}")
+        if literal(field.kwargs.get("pattern"), source) == NUMERIC_STRING_PATTERN:
+            constraints = (constraints - {"string"}) | {"numeric_string"}
         has_default = "default" in field.kwargs or (field.args and field.args[0].type != "ellipsis")
         optional = optional or bool(has_default)
     elif value is not None:

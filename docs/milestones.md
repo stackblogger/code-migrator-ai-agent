@@ -9,8 +9,8 @@ Details are in [PLAN.md §14](../PLAN.md).
 | M2 | Docker sandbox: build and test the source repo | ✅ Done |
 | M3 | Behaviour baseline (run source app, record golden traces) | ✅ Done |
 | M4 | Concept model + NestJS/FastAPI adapters + ledger | ✅ Done |
-| M5 | OpenAI LLM layer + planner + target skeleton | ⏳ Next |
-| M6 | Unit migration + fix loop | Not started |
+| M5 | OpenAI LLM layer + planner + target skeleton | ✅ Done |
+| M6 | Unit migration + fix loop | ⏳ Next |
 | M7 | Differential validation + gates + report + evals | Not started |
 | M8 | Hardening (hazards, fuzz, authz matrix, hold-out, seeded bugs) | Not started |
 | M9 | API + workers + Postgres + approvals | Not started |
@@ -100,3 +100,26 @@ and running app + database together belongs with trace recording.
 - Ledger TypeScript → Python: 30 items, 27 mapped. The 3 others are exactly the real differences
   we already saw in M3 traces: cancel status 201 vs 200, `total` numeric string vs decimal,
   and `userId` vs `user_id` (with a hint). With the fixture waivers the ledger is complete.
+
+## M5: what got done
+
+- LLM layer ([docs/llm.md](llm.md)): OpenAI provider (Responses API, structured outputs), fake
+  provider for tests, versioned prompts, `<repository_data>` wrapping, secret redaction, disk
+  cache, usage log with tokens and time
+- `migrator plan [--llm]`: units from the SCC graph in dependency order, file roles, convention
+  layout; the LLM proposes layout + behaviour risks, our code validates it (one retry, then fallback)
+- `migrator skeleton [--llm] [--check]`: deterministic FastAPI project from the concept model and plan
+- Boot check: build + smoke test + start with Postgres + probe every route; auth routes must give
+  401 without a token. The resolved `uv.lock` is saved back so later installs are frozen.
+- 122 fast tests, 1 live OpenAI test (opt-in), 19 Docker tests
+
+**Exit test result:** ✅
+- Plan respects SCC order (checked in code and tests); the entity cycle is one unit.
+- Skeleton for the TypeScript fixture compiles, installs, passes its smoke test and boots.
+  All 4 auth routes answer 401 without a token, `POST /users` answers 422 on an empty body.
+- Ledger source → skeleton: everything is mapped except the business-logic errors
+  (400, 404, 409), which are M6 work. Only `HTTP 501` (the stub marker) is extra.
+- Live OpenAI run: 1 call, about 4.3k tokens, answer valid on the first try.
+
+**Found on the way:** FastAPI 0.141 wraps included routers, so walking `app.routes` no longer
+lists them. The skeleton smoke test caught it; it now reads routes from `app.openapi()`.
