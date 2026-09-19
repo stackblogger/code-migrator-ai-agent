@@ -1118,7 +1118,7 @@
               "ruff": ">=0.5"
             },
             "file": "pyproject.toml",
-            "package_manager": "pip",
+            "package_manager": "uv",
             "scripts": {}
           }
         ],
@@ -1162,7 +1162,7 @@
       }
     ],
     "repo_name": "py-fastapi-shop",
-    "total_files": 21
+    "total_files": 22
   },
   "symbols": [
     {

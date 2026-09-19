@@ -4,7 +4,8 @@ from migrator.adapters.languages.base import LanguageAdapter, declared_packages
 from migrator.adapters.languages.python import project
 from migrator.adapters.languages.python.parser import parse_python
 from migrator.adapters.languages.python.resolver import STDLIB, PythonResolver
-from migrator.core.models import ImportRef, Manifest, ParsedFile
+from migrator.adapters.languages.python.toolchain import build_toolchain
+from migrator.core.models import ImportRef, LanguageInventory, Manifest, ParsedFile, Toolchain
 from migrator.repository import LocalRepository
 
 # Import name -> package name, where they are different.
@@ -50,6 +51,9 @@ class PythonAdapter(LanguageAdapter):
     ) -> list[str]:
         resolver = PythonResolver({p.path for p in parsed})
         return project.find_entry_points(manifests, parsed, resolver.module_file)
+
+    def toolchain(self, repo: LocalRepository, inventory: LanguageInventory) -> Toolchain:
+        return build_toolchain(repo, inventory)
 
     def is_builtin(self, package: str) -> bool:
         return package in STDLIB

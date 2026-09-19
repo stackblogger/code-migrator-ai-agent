@@ -4,8 +4,8 @@ import { OrderStatus } from '../src/orders/order.entity';
 
 describe('OrdersService', () => {
   const orders = {
-    create: jest.fn((data) => data),
-    save: jest.fn(async (data) => ({ id: 1, ...data })),
+    create: jest.fn((data: any) => data),
+    save: jest.fn(async (data: any) => ({ id: 1, ...data })),
     findOne: jest.fn(),
   };
   const users = { findById: jest.fn(async (id: number) => ({ id })) };

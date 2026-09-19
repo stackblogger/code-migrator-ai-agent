@@ -1,5 +1,7 @@
 import json
 import os
+import shutil
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -7,6 +9,21 @@ import pytest
 ROOT = Path(__file__).resolve().parent.parent
 FIXTURES = ROOT / "fixtures"
 SNAPSHOTS = Path(__file__).resolve().parent / "snapshots"
+
+
+def _docker_available() -> bool:
+    if shutil.which("docker") is None:
+        return False
+    return subprocess.run(["docker", "info"], capture_output=True).returncode == 0
+
+
+def pytest_collection_modifyitems(config, items):
+    if _docker_available():
+        return
+    skip = pytest.mark.skip(reason="Docker daemon not available")
+    for item in items:
+        if "docker" in item.keywords:
+            item.add_marker(skip)
 
 
 @pytest.fixture

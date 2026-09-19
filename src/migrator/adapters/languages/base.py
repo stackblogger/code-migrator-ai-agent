@@ -1,12 +1,12 @@
 """Contract every language adapter must follow.
 
 The core analyzer only talks to this interface. To add a new language, write a new
-adapter and register it in `registry.py`. No change needed in the core.
+adapter and register it in `adapters/languages/__init__.py`. No change needed in the core.
 """
 
 from abc import ABC, abstractmethod
 
-from migrator.core.models import ImportRef, Manifest, ParsedFile
+from migrator.core.models import ImportRef, LanguageInventory, Manifest, ParsedFile, Toolchain
 from migrator.repository import LocalRepository
 
 ToolTable = dict[str, list[tuple[str, str]]]  # dependency -> [(category, tool name)]
@@ -45,6 +45,10 @@ class LanguageAdapter(ABC):
     @abstractmethod
     def is_builtin(self, package: str) -> bool:
         """True for standard library modules (these need no dependency entry)."""
+
+    @abstractmethod
+    def toolchain(self, repo: LocalRepository, inventory: LanguageInventory) -> Toolchain:
+        """Image and fixed commands to install, build and test this repo in the sandbox."""
 
     def is_declared(self, package: str, manifests: list[Manifest]) -> bool:
         """True if the package is listed in any manifest."""

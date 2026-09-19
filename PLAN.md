@@ -448,8 +448,8 @@ Long-running work runs in background workers, never inside a request.
 | # | Milestone | Exit criteria |
 |---|---|---|
 | **M1** | Repository analyzer: language, package manager, build and test tool detection; entry points; config/env discovery; tree-sitter symbols; import graph with SCCs; CLI `migrator analyze` | Snapshot tests on TS and Python fixture repos; graph and SCCs correct on a fixture with a cycle |
-| **M2** | Sandbox + toolchains: build, test, and run the **source** fixtures in Docker with limits and network phases | Source fixture tests pass in sandbox; sandbox escape/limit tests pass |
-| **M3** | Behavior baseline: harness, determinism controls, record/replay proxy, DB diffing, trace capture, self-consistency check | Source-vs-source replay is 100% stable; coverage and mutation score reported |
+| **M2** | Sandbox + toolchains: install, build, and test the **source** fixtures in Docker with limits and network phases | Source fixture tests pass in sandbox; sandbox escape/limit tests pass |
+| **M3** | Behavior baseline: run source app + its services (DB) in sandbox, harness, determinism controls, record/replay proxy, DB diffing, trace capture, self-consistency check | Source-vs-source replay is 100% stable; coverage and mutation score reported |
 | **M4** | CCM + NestJS/FastAPI framework adapters + ledger + surface extraction | Ledger for fixture is complete; API/schema surface extracted on both stacks |
 | **M5** | LLM layer + planner + interface-first skeleton | Skeleton for fixture compiles and boots; plan respects SCC order |
 | **M6** | Unit migration loop + sealed tests + fix loop + git per unit | ≥ 80% of fixture units reach unit-test green; attempts/blocked tracked |

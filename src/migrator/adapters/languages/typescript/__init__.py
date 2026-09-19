@@ -2,7 +2,8 @@ from migrator.adapters.languages.base import LanguageAdapter
 from migrator.adapters.languages.typescript import project
 from migrator.adapters.languages.typescript.parser import parse_typescript
 from migrator.adapters.languages.typescript.resolver import NODE_BUILTINS, resolve_import
-from migrator.core.models import ImportRef, Manifest, ParsedFile
+from migrator.adapters.languages.typescript.toolchain import build_toolchain
+from migrator.core.models import ImportRef, LanguageInventory, Manifest, ParsedFile, Toolchain
 from migrator.repository import LocalRepository
 
 TEST_SUFFIXES = (".spec.ts", ".test.ts", ".spec.tsx", ".test.tsx", ".e2e-spec.ts")
@@ -36,6 +37,9 @@ class TypeScriptAdapter(LanguageAdapter):
         self, repo: LocalRepository, manifests: list[Manifest], parsed: list[ParsedFile]
     ) -> list[str]:
         return project.find_entry_points(repo, manifests)
+
+    def toolchain(self, repo: LocalRepository, inventory: LanguageInventory) -> Toolchain:
+        return build_toolchain(repo, inventory)
 
     def is_builtin(self, package: str) -> bool:
         return package in NODE_BUILTINS

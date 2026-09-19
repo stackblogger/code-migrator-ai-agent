@@ -88,3 +88,20 @@ class RepoReport(BaseModel):
     imports: list[ImportRef]
     graph: GraphReport
     warnings: list[str]
+
+
+class ToolchainStep(BaseModel):
+    """One fixed command run inside the sandbox. Commands come from adapters, never from the LLM."""
+
+    name: str  # install | build | test
+    command: list[str]
+    network: bool = False  # only install steps get network
+
+
+class Toolchain(BaseModel):
+    """How to install, build and test a repo for one language."""
+
+    language: str
+    image: str
+    steps: list[ToolchainStep]
+    notes: list[str] = Field(default_factory=list)  # e.g. "no test command found"
