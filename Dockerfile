@@ -1,5 +1,8 @@
 # ---- base: Python + locked dependencies (no project code yet, for better caching) ----
 FROM python:3.12-slim AS base
+# git is needed by `migrator migrate` (history of the generated target repo)
+RUN apt-get update && apt-get install -y --no-install-recommends git \
+    && rm -rf /var/lib/apt/lists/*
 COPY --from=ghcr.io/astral-sh/uv:0.11 /uv /bin/uv
 ENV UV_COMPILE_BYTECODE=1 \
     UV_LINK_MODE=copy \

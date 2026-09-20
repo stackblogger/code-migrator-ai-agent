@@ -86,3 +86,19 @@ def test_only_install_steps_get_network():
     ]:
         for step in toolchain_for(FIXTURES / fixture, adapter).steps:
             assert step.network == (step.name == "install")
+
+
+MYPY_PROJECT = '[project]\nname = "x"\n[dependency-groups]\ndev = ["mypy", "pytest"]\n'
+
+
+def test_python_typecheck_step_when_mypy_is_used(make_repo):
+    root = make_repo(
+        {
+            "pyproject.toml": MYPY_PROJECT,
+            "app.py": "x = 1\n",
+        }
+    )
+    toolchain = toolchain_for(root, PythonAdapter())
+    assert [s.name for s in toolchain.steps] == ["install", "build", "typecheck", "test"]
+    assert toolchain.steps[2].command[:3] == [".venv/bin/python", "-m", "mypy"]
+    assert toolchain.steps[2].network is False

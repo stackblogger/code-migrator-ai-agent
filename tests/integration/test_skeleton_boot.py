@@ -18,7 +18,7 @@ def test_skeleton_builds_and_boots(tmp_path):
     write_skeleton(generate_skeleton(source, build_plan(source)), tmp_path)
     result = check_skeleton(LocalRepository(tmp_path), build_concept_model(source))
     assert result.ok, result.problems
-    assert [s.name for s in result.build.steps] == ["install", "build", "test"]
+    assert [s.name for s in result.build.steps] == ["install", "build", "typecheck", "test"]
     assert result.routes == {
         "GET /orders": 401,
         "GET /users/{}": 401,

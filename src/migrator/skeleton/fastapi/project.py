@@ -9,7 +9,15 @@ from migrator.planning.models import FileRole, MigrationPlan
 from migrator.skeleton.files import FileBuilder
 
 BASE_DEPENDENCIES = ["fastapi>=0.111", "uvicorn[standard]>=0.30"]
-BASE_DEV_DEPENDENCIES = ["pytest>=8.2", "httpx>=0.27"]
+BASE_DEV_DEPENDENCIES = ["pytest>=8.2", "httpx>=0.27", "mypy>=1.11"]
+# mypy runs in the sandbox after every migrated unit. check_untyped_defs, because LLM code
+# does not always have type hints, and wrong calls between units must still be found.
+MYPY_CONFIG = """[tool.mypy]
+python_version = "3.12"
+check_untyped_defs = true
+ignore_missing_imports = true
+exclude = ['\\.venv']
+"""
 
 DATABASE = """
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./app.db")
@@ -94,7 +102,7 @@ def render_project(
             f'[project]\nname = "{repo_name}-python"\nversion = "0.1.0"\n'
             f'requires-python = ">=3.12"\ndependencies = [\n{deps}]\n\n'
             f"[dependency-groups]\ndev = [{dev_deps}]\n\n"
-            '[tool.pytest.ini_options]\ntestpaths = ["tests"]\npythonpath = ["."]'
+            '[tool.pytest.ini_options]\ntestpaths = ["tests"]\npythonpath = ["."]\n\n' + MYPY_CONFIG
         ),
     )
     readme = README.format(name=repo_name, source=plan.source_repo, language=plan.source_language)
@@ -139,9 +147,10 @@ def render_main(
             "from contextlib import asynccontextmanager",
             "from app.database import Base, engine",
         ]
-        imports += [
-            f"import {m.removesuffix('.py').replace('/', '.')}  # noqa: F401" for m in model_modules
-        ]
+        for path in model_modules:  # imported only so SQLAlchemy knows every table
+            package, _, name = path.removesuffix(".py").replace("/", ".").rpartition(".")
+            alias = package.replace(".", "_") + f"_{name}"
+            imports.append(f"from {package} import {name} as {alias}  # noqa: F401")
         lines += [LIFESPAN, "", 'app = FastAPI(title="Migrated app", lifespan=lifespan)']
     else:
         lines.append('app = FastAPI(title="Migrated app")')

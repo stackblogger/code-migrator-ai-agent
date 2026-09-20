@@ -10,8 +10,8 @@ Details are in [PLAN.md §14](../PLAN.md).
 | M3 | Behaviour baseline (run source app, record golden traces) | ✅ Done |
 | M4 | Concept model + NestJS/FastAPI adapters + ledger | ✅ Done |
 | M5 | OpenAI LLM layer + planner + target skeleton | ✅ Done |
-| M6 | Unit migration + fix loop | ⏳ Next |
-| M7 | Differential validation + gates + report + evals | Not started |
+| M6 | Unit migration + fix loop | ✅ Done |
+| M7 | Differential validation + gates + report + evals | ⏳ Next |
 | M8 | Hardening (hazards, fuzz, authz matrix, hold-out, seeded bugs) | Not started |
 | M9 | API + workers + Postgres + approvals | Not started |
 | M10 | Web UI | Not started |
@@ -123,3 +123,33 @@ and running app + database together belongs with trace recording.
 
 **Found on the way:** FastAPI 0.141 wraps included routers, so walking `app.routes` no longer
 lists them. The skeleton smoke test caught it; it now reads routes from `app.openapi()`.
+
+## M6: what got done
+
+- `migrator migrate <source> --target-dir <skeleton> [--baseline ...] [--units ...]` ([docs/migration.md](migration.md))
+- Unit loop: LLM → policy check → write → stub/test check → sandbox build + mypy + full tests →
+  commit, or fix with the exact error. 5 attempts (last one on the strong model), then BLOCKED
+  with files restored and a report.
+- Minimal context per unit; only visible traces (hold-out never read); JWT claims, never tokens
+- Write permissions enforced by code; the smoke test, pyproject, lockfile and state are protected
+- Git history in the generated target repo (one commit per green unit), resumable state
+- Type check step (mypy) in the Python toolchain, used whenever a project declares mypy
+- 131 fast tests, 5 new Docker tests for the loop with a fake LLM (green, fix, rule-breaking
+  answers, blocked + restore, resume)
+
+**Exit test result:** ✅ (goal was 80% of units green)
+- Live run on the TypeScript fixture: 12 of 12 units with work are green, 0 blocked, 5 skipped
+  (module wiring). About 99k tokens.
+
+**What the live runs taught us (important):**
+- Run 1 (no type check) was also 12/12 green, but replaying the M3 scenarios on the result
+  gave 20 server errors. One router called `UsersService(db)`, but the service needed a second
+  argument. Every unit's own tests passed because they used fakes. So "green" is not "same
+  behaviour". We added mypy with `check_untyped_defs` to the loop.
+- Run 2 (with type check): mypy caught problems in 6 units and the loop fixed them. Replaying
+  the scenarios: 0 server errors, 22/22 status codes same as the source, database changes and
+  schema the same, 16/22 responses fully the same.
+- Still different (for M7 to fix through differential testing): error bodies use FastAPI's
+  `{"detail": ...}` instead of NestJS's `{"message", "error", "statusCode"}` (6 requests), and
+  `content-type` has no `; charset=utf-8`. M7 must also compare schemas by column name,
+  not by column position.

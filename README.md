@@ -8,7 +8,7 @@ Full design is in [PLAN.md](PLAN.md). Current status is in [docs/milestones.md](
 
 ## Status
 
-**Milestones 1 to 5 are done.**
+**Milestones 1 to 6 are done.**
 
 **M1: repository analyzer.** It reads a repo and tells you:
 
@@ -38,6 +38,11 @@ behaviour risks per unit, and our code checks its answer. `migrator skeleton` th
 Python + FastAPI project with the same routes, status codes, auth rules, tables, columns and
 validation as the source. Handlers answer 501 until the logic is migrated (M6).
 `--check` builds and boots it in the sandbox. See [docs/llm.md](docs/llm.md).
+
+**M6: logic migration.** `migrator migrate` asks the LLM to write each unit's real code and
+tests, checks them in the sandbox (build, type-check, and the whole test suite), sends errors back for a fix,
+and commits each green unit in the target repo. After 5 failed tries a unit is BLOCKED with a
+report. The LLM can only write that unit's own files. See [docs/migration.md](docs/migration.md).
 
 Supported: **TypeScript → Python** for now (source adapters exist for both languages).
 
@@ -111,6 +116,12 @@ Generate the target skeleton, then build and boot it in the sandbox:
 uv run migrator skeleton fixtures/ts-nestjs-shop --out out/shop-python --check
 ```
 
+Migrate the logic, unit by unit (needs `OPENAI_API_KEY`, Docker and git; uses only the visible baseline traces):
+
+```bash
+uv run migrator migrate fixtures/ts-nestjs-shop --target-dir out/shop-python --baseline baseline/ts
+```
+
 ## Logs
 
 Logs go to stderr, summaries go to stdout. Use `-v` for debug logs, `-q` for warnings only:
@@ -168,6 +179,7 @@ src/migrator/
   llm/             OpenAI provider, prompts, redaction, cache, usage log
   planning/        units, roles, target layout, LLM mapping
   skeleton/        target project generator (fastapi/) and boot check
+  migration/       unit loop, policy, context, sandbox checker, git in target repo
   mappings/        dependency mapping (TOML)
   config.py        settings from .env
   log.py           logging setup

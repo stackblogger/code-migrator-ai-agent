@@ -452,7 +452,7 @@ Long-running work runs in background workers, never inside a request.
 | **M3** | Behavior baseline: run source app + its services (DB) in sandbox, harness, determinism controls, DB diffing, trace capture, self-consistency check, hold-out split, mutation score | Source-vs-source replay is 100% stable (with approved rules); mutation score reported |
 | **M4** | CCM + NestJS/TypeORM/FastAPI/SQLAlchemy framework adapters + ledger + surface extraction + static-vs-real schema check | Ledger for fixture is complete; API/schema surface extracted on both stacks |
 | **M5** | OpenAI LLM layer + planner (LLM layout + risks, validated) + deterministic interface-first skeleton + boot check | Skeleton for fixture compiles and boots; plan respects SCC order |
-| **M6** | Unit migration loop + sealed tests + fix loop + git per unit | ≥ 80% of fixture units reach unit-test green; attempts/blocked tracked |
+| **M6** | Unit migration loop + sealed tests + fix loop + type-check step + git per unit (in target repo) | ≥ 80% of fixture units reach unit-test green; attempts/blocked tracked |
 | **M7** | Differential validation + gates G0–G6 + report + **evaluation harness** | First full NestJS→FastAPI fixture run with a truthful report; eval runs N× and reports variance |
 | **M8** | Hardening: hazards, property/fuzz, authz matrix, anti-cheat, adversarial reviewer, line coverage of source under the harness, record/replay proxy for external services, G7–G10 | Seeded bugs injected into target are caught by gates (≥ 95% of the seeded bug set) |
 | **M9** | API + Redis workers + Postgres + approvals/waivers | API tests; pause/resume/cancel survive worker restart |

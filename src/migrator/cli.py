@@ -16,6 +16,9 @@ from migrator.ledger import build_ledger, load_waivers
 from migrator.ledger.summary import format_ledger
 from migrator.llm import default_client
 from migrator.log import setup_logging
+from migrator.migration.loop import MAX_ATTEMPTS, run_migration
+from migrator.migration.models import UnitStatus
+from migrator.migration.summary import format_migration
 from migrator.planning.planner import build_plan
 from migrator.planning.summary import format_plan
 from migrator.repository import LocalRepository
@@ -150,6 +153,20 @@ def _skeleton(args: argparse.Namespace) -> int:
     return 0 if result.ok else 1
 
 
+def _migrate(args: argparse.Namespace) -> int:
+    plan, state = run_migration(
+        LocalRepository(args.source),
+        Path(args.target_dir),
+        default_client(),
+        baseline_dir=Path(args.baseline) if args.baseline else None,
+        only_units=set(args.units.split(",")) if args.units else None,
+        max_attempts=args.max_attempts,
+    )
+    print(format_migration(plan, state))
+    blocked = any(u.status == UnitStatus.BLOCKED for u in state.units.values())
+    return 1 if blocked else 0
+
+
 def _cleanup(args: argparse.Namespace) -> int:
     DockerSandbox().cleanup_stale()
     print("Removed leftover sandbox containers (if any).")
@@ -235,6 +252,20 @@ def _parser() -> argparse.ArgumentParser:
     )
     skeleton_cmd.add_argument("--force", action="store_true", help="Write into a non-empty folder")
     skeleton_cmd.set_defaults(handler=_skeleton)
+
+    migrate_cmd = sub.add_parser("migrate", help="Migrate the logic unit by unit with the LLM")
+    migrate_cmd.add_argument("source", help="Path to the source repository")
+    migrate_cmd.add_argument(
+        "--target-dir", required=True, help="Skeleton folder made by `skeleton`"
+    )
+    migrate_cmd.add_argument(
+        "--baseline", help="Baseline folder (only its visible traces.json is used)"
+    )
+    migrate_cmd.add_argument("--units", help="Only these units, e.g. u04,u09")
+    migrate_cmd.add_argument(
+        "--max-attempts", type=int, default=MAX_ATTEMPTS, help="Tries per unit before BLOCKED"
+    )
+    migrate_cmd.set_defaults(handler=_migrate)
 
     cleanup_cmd = sub.add_parser("cleanup", help="Remove leftover sandbox containers")
     cleanup_cmd.set_defaults(handler=_cleanup)

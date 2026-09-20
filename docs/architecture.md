@@ -117,6 +117,12 @@ skeleton: concepts + plan → FastAPI renderer (skeleton/fastapi/):
 The skeleton is made by code, not by the LLM, because it is pure structure and must be exact.
 The LLM only chooses the layout (and lists risks). Logic comes in M6.
 
+## Flow of `migrator migrate`
+
+See [migration.md](migration.md). In short: for each unit in plan order, build a minimal
+context → LLM (structured `UnitChange`) → policy check → write → stub/test check → sandbox build
++ mypy + full test suite → commit, or send the error back. Max 5 attempts, then BLOCKED + restore.
+
 ## Logging
 
 Every module uses `logging.getLogger(__name__)`; setup is in `log.py`. Logs go to stderr.

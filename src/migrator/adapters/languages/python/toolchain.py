@@ -19,6 +19,11 @@ def build_toolchain(repo: LocalRepository, inventory: LanguageInventory) -> Tool
     compile_all = [VENV_PYTHON, "-m", "compileall", "-q", "-x", r"\.venv", "."]
     steps.append(_step("build", *compile_all))
 
+    if "mypy" in inventory.tools.get("typecheck", []):
+        # Catches calls with wrong arguments between modules, without running anything.
+        mypy = [VENV_PYTHON, "-m", "mypy", ".", "--exclude", r"\.venv", "--no-incremental"]
+        steps.append(_step("typecheck", *mypy))
+
     if "pytest" in inventory.tools.get("test", []):
         pytest = [VENV_PYTHON, "-m", "pytest", "-q", "-p", "no:cacheprovider"]
         steps.append(_step("test", *pytest))
